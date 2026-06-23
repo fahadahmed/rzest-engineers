@@ -1,0 +1,175 @@
+---
+import Base from "../layouts/Base.astro";
+import { PageHero } from "../components/molecules/PageHero/PageHero";
+import { StatStrip } from "../components/molecules/StatStrip/StatStrip";
+import { Placeholder } from "../components/atoms/Placeholder/Placeholder";
+import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
+import { PersonCard } from "../components/molecules/PersonCard/PersonCard";
+import { PartnerCard } from "../components/molecules/PartnerCard/PartnerCard";
+import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
+import { globalStats, teamMembers, partners, aboutStory } from "../data/mock";
+
+const managingDirector = teamMembers.find((member) => member.isManagingDirector)!;
+const team = teamMembers.filter((member) => !member.isManagingDirector);
+---
+
+<Base title="About Us" description={aboutStory.lede}>
+  <PageHero
+    eyebrow="About RZest Engineers"
+    title="Engineering built on integrity, precision and experience."
+    description={aboutStory.lede}
+  >
+    <StatStrip stats={globalStats} />
+  </PageHero>
+
+  <section class="wrap section">
+    <div class="two-col">
+      <Placeholder label="Engineering team" height={380} rounded="lg" />
+      <div class="story-grid">
+        <div>
+          <Eyebrow plain>{aboutStory.storyTitle}</Eyebrow>
+          <hr class="rule" style="margin:var(--s-3) 0 var(--s-4)" />
+          <p>{aboutStory.storyBody}</p>
+        </div>
+        <div>
+          <Eyebrow plain>{aboutStory.visionTitle}</Eyebrow>
+          <hr class="rule" style="margin:var(--s-3) 0 var(--s-4)" />
+          <p>{aboutStory.visionBody}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <div class="section-label">
+      <Eyebrow>Leadership</Eyebrow>
+      <p class="desc">Technical depth, practical execution.</p>
+    </div>
+    <div class="two-col" style="align-items:start">
+      <div
+        class="card"
+        style="display:flex; flex-wrap:wrap; gap:var(--s-5); align-items:center; box-shadow:var(--sh-2)"
+      >
+        <div class="avatar avatar--lg avatar--signal">{managingDirector.initials}</div>
+        <div>
+          <Eyebrow plain>Managing Director</Eyebrow>
+          <div
+            style="font-family:var(--font-display); font-weight:800; font-size:var(--t-2xl); margin-top:6px"
+          >
+            {managingDirector.name}
+          </div>
+        </div>
+      </div>
+      <p class="lede" style="max-width:52ch">{aboutStory.leadershipBody}</p>
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="section-label">
+      <Eyebrow>Our Team</Eyebrow>
+      <p class="desc">Multidisciplinary by design.</p>
+    </div>
+    <div class="team-grid">
+      {
+        team.map((member) => (
+          <PersonCard name={member.name} role={member.role} initials={member.initials} />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <div class="section-label">
+      <Eyebrow>Partner Architects</Eyebrow>
+      <p class="desc">Collaborative industry partnerships.</p>
+    </div>
+    <h2 class="display" style="font-size:var(--t-2xl); max-width:20ch; margin-bottom:var(--s-7)">
+      Working alongside leading architectural practices.
+    </h2>
+    <div class="partner-grid">
+      {
+        partners.map((partner) => (
+          <PartnerCard tagLabel={partner.tagLabel} name={partner.name} meta={partner.meta} />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <CtaBand
+      title="Let's Build with Confidence"
+      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+      buttonLabel="Start a Conversation"
+      buttonHref="/contact"
+    />
+  </section>
+</Base>
+
+<style>
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+  .partner-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+  .section-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-bottom: var(--s-6);
+  }
+  .section-label .desc {
+    max-width: 30ch;
+    color: var(--ink-3);
+    font-size: var(--t-sm);
+  }
+  @media (min-width: 600px) {
+    .team-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 760px) {
+    .story-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-7);
+    }
+    .partner-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .two-col {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--s-7);
+      align-items: center;
+    }
+    .team-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .section-label {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--s-4);
+    }
+    .section-label .desc {
+      margin-left: auto;
+      text-align: right;
+    }
+  }
+</style>

@@ -12,7 +12,7 @@ export interface PageHeroProps {
 }
 
 export function PageHero({ eyebrow, title, description, children, className = "" }: PageHeroProps) {
-  const classes = ["page-hero", className].filter(Boolean).join(" ");
+  const classes = ["wrap", "page-hero", className].filter(Boolean).join(" ");
 
   return (
     <section className={classes}>

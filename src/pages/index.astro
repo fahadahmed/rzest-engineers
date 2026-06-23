@@ -1,80 +1,365 @@
 ---
-import "../styles/rzest-ds.css";
-import { Header, Footer, CtaBand } from "../components/organisms";
-import { PageHero, StatStrip } from "../components/molecules";
+import Base from "../layouts/Base.astro";
+import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
+import { Placeholder } from "../components/atoms/Placeholder/Placeholder";
+import { Button } from "../components/atoms/Button/Button";
+import { LinkArrow } from "../components/atoms/LinkArrow/LinkArrow";
+import { AvatarStack } from "../components/molecules/AvatarStack/AvatarStack";
+import { ProjectCard } from "../components/molecules/ProjectCard/ProjectCard";
+import { PersonCard } from "../components/molecules/PersonCard/PersonCard";
+import { StatStrip } from "../components/molecules/StatStrip/StatStrip";
+import { ServicesShowcase } from "../components/organisms/ServicesShowcase/ServicesShowcase";
+import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
+import {
+  homeHero,
+  homeAboutPreview,
+  globalStats,
+  services,
+  projects,
+  teamMembers,
+} from "../data/mock";
 
-// Inline placeholder data for this component-library smoke test only.
-// Real content wiring (mock data / DatoCMS) lands with the page redesigns.
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Projects", href: "/projects" },
-  { label: "Contact", href: "/contact" },
-];
+const homeServices = services.map((service) => ({
+  id: service.id,
+  index: service.index,
+  name: service.name,
+  description: service.fullDescription,
+}));
 
-const stats = [
-  { value: "100", unit: "+", label: "Projects Delivered" },
-  { value: "11", unit: "+", label: "Years Engineering Expertise" },
-  { value: "Multi-Sector", label: "Project Portfolio" },
-];
+const homeProjects = projects.slice(0, 4);
+const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slice(0, 4);
 ---
 
-<html lang="en" data-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-    />
-    <title>RZest Engineers</title>
-  </head>
-  <body>
-    <Header
-      client:load
-      brandLabel="RZest Engineers"
-      brandHref="/"
-      navItems={navItems}
-      currentPath="/"
-      ctaLabel="Start a Conversation"
-      ctaHref="/contact"
-    />
-    <main class="wrap">
-      <PageHero eyebrow="Structural / Project" title="Engineering Structures. Enabling Vision.">
-        <StatStrip stats={stats} />
-      </PageHero>
-    </main>
-    <section class="wrap section">
-      <CtaBand
-        title="Let's Build with Confidence"
-        description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-        buttonLabel="Start a Conversation"
-        buttonHref="/contact"
+<Base title="Structural Engineering & Project Consultancy">
+  <section class="wrap hero">
+    <div class="hero-top">
+      <div class="signal-card-wrap">
+        <div class="signal-card">
+          <Eyebrow>{homeHero.signalEyebrow}</Eyebrow>
+          <h3 class="signal-title">{homeHero.signalTitle}</h3>
+        </div>
+      </div>
+      <p class="microcopy hero-micro">{homeHero.microcopy}</p>
+    </div>
+
+    <h1 class="hero-word">RZEST<span style="color:var(--signal)">.</span></h1>
+
+    <div class="hero-grid">
+      <div class="hero-float">
+        <Placeholder
+          src={homeHero.heroImage.url}
+          alt={homeHero.heroImage.alt}
+          label="Site photo"
+          height={300}
+          rounded="lg"
+          className="hero-shot"
+        />
+        <p class="lede" style="max-width:38ch; margin-top:var(--s-5)">
+          <span
+            class="display"
+            style="font-size:var(--t-xl); display:block; margin-bottom:var(--s-4)"
+            >{homeHero.leadTitle}
+            <span style="color:var(--ink-3)">{homeHero.leadAccent}</span></span
+          >
+          {homeHero.leadBody}
+        </p>
+        <div class="row" style="gap:var(--s-4); margin-top:var(--s-5); flex-wrap:wrap">
+          <Button href="/services" variant="primary" showArrow>Explore Services</Button>
+          <LinkArrow href="/projects">View projects</LinkArrow>
+        </div>
+      </div>
+
+      <div class="stack" style="gap:var(--s-5)">
+        <div class="hero-thumbs">
+          {
+            homeHero.thumbImages.map((image) => (
+              <Placeholder src={image.url} alt={image.alt} label={image.alt} height={150} />
+            ))
+          }
+        </div>
+        <div class="card trust-card" style="box-shadow:var(--sh-2)">
+          <div>
+            <div class="row" style="gap:var(--s-3); margin-bottom:var(--s-3); flex-wrap:wrap">
+              <AvatarStack
+                people={teamMembers.slice(0, 3).map((m) => ({ initials: m.initials }))}
+                maxVisible={3}
+              />
+              <Eyebrow plain>{homeHero.trustLabel}</Eyebrow>
+            </div>
+            <div class="stat">
+              <div class="num">
+                {homeHero.trustStat.value}<span class="unit">{homeHero.trustStat.unit}</span>
+              </div>
+            </div>
+            <p style="font-size:var(--t-sm); margin-top:var(--s-2)">{homeHero.trustBody}</p>
+          </div>
+          <Placeholder
+            src={homeHero.trustImage.url}
+            alt={homeHero.trustImage.alt}
+            label={homeHero.trustImage.alt}
+            height={128}
+            className="trust-image"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <hr class="rule" />
+    <div class="row stats-row">
+      <StatStrip stats={globalStats} />
+      <div class="row" style="gap:var(--s-3)">
+        <span class="tag tag--solid">Commercial</span>
+        <span class="tag">Residential</span>
+      </div>
+    </div>
+    <hr class="rule" />
+  </section>
+
+  <section class="wrap section">
+    <div class="section-label">
+      <Eyebrow>About RZest</Eyebrow>
+      <p class="desc">Precision and trust, by design.</p>
+    </div>
+    <div class="two-col">
+      <div>
+        <h2 class="display" style="font-size:var(--t-2xl)">
+          {homeAboutPreview.title}
+          <span style="color:var(--signal-deep)">{homeAboutPreview.titleAccent}</span> and trust.
+        </h2>
+        <p class="lede" style="margin-top:var(--s-5); max-width:48ch">{homeAboutPreview.body}</p>
+        <Button
+          href={homeAboutPreview.linkHref}
+          variant="outline"
+          showArrow
+          style={{ marginTop: "var(--s-6)" }}
+        >
+          {homeAboutPreview.linkLabel}
+        </Button>
+      </div>
+      <Placeholder
+        src={homeAboutPreview.image.url}
+        alt={homeAboutPreview.image.alt}
+        label={homeAboutPreview.image.alt}
+        height={340}
+        rounded="lg"
       />
-    </section>
-    <Footer
-      brandLabel="RZest Engineers"
-      tagline="Full-service structural engineering and project delivery consultancy."
-      ctaLabel="Start a Conversation"
-      ctaHref="/contact"
-      companyLinks={[
-        { label: "About", href: "/about" },
-        { label: "Services", href: "/services" },
-        { label: "Projects", href: "/projects" },
-        { label: "Contact", href: "/contact" },
-      ]}
-      contactLinks={[
-        { label: "rzest@engineers.com", href: "mailto:rzest@engineers.com" },
-        { label: "+92 99065 4171", href: "tel:+92990654171" },
-      ]}
-      copyrightLine="© 2026 RZest Engineers. All rights reserved."
-      addressLine="48-A/21, Nadia Sector A/2, Umar Kot — 69100"
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="section-label">
+      <Eyebrow>Our Services</Eyebrow>
+      <p class="desc">Planning · analysis · design · documentation · supervision · management.</p>
+    </div>
+    <h2 class="display" style="font-size:var(--t-2xl); max-width:18ch; margin-bottom:var(--s-7)">
+      Integrating Engineering & <span style="color:var(--ink-3)">Project Consultancy</span> Services
+    </h2>
+    <ServicesShowcase client:visible services={homeServices} viewAllHref="/services" />
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <div class="section-label">
+      <Eyebrow>Our Projects</Eyebrow>
+      <p class="desc">Selected work across diverse sectors.</p>
+    </div>
+    <h2 class="display" style="font-size:var(--t-2xl); max-width:16ch; margin-bottom:var(--s-7)">
+      Selected projects across <span style="color:var(--signal-deep)">diverse sectors.</span>
+    </h2>
+    <div class="proj-grid">
+      {
+        homeProjects.map((project) => (
+          <ProjectCard
+            href={`/projects/${project.slug}`}
+            title={project.title}
+            meta={project.sectorLabel}
+            sector={project.sector}
+            thumbnailSrc={project.thumbnail.url}
+          />
+        ))
+      }
+    </div>
+    <LinkArrow href="/projects" style={{ marginTop: "var(--s-6)" }}>Explore all projects</LinkArrow>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <div class="section-label">
+      <Eyebrow>Leadership</Eyebrow>
+      <p class="desc">Driven by engineering expertise.</p>
+    </div>
+    <div class="two-col" style="align-items:start; margin-bottom:var(--s-7)">
+      <div
+        class="card"
+        style="display:flex; gap:var(--s-5); align-items:center; box-shadow:var(--sh-2)"
+      >
+        <div class="avatar avatar--lg avatar--signal">RA</div>
+        <div>
+          <Eyebrow plain>Managing Director</Eyebrow>
+          <div
+            style="font-family:var(--font-display); font-weight:800; font-size:var(--t-xl); margin-top:6px"
+          >
+            Rabi Akhtar
+          </div>
+        </div>
+      </div>
+      <p class="lede" style="max-width:52ch">
+        Led by Managing Director Rabi Akhtar, RZest Engineers combines technical depth with
+        practical execution to deliver reliable outcomes — supported by a multidisciplinary team of
+        structural engineers, BIM specialists and draughtsmen.
+      </p>
+    </div>
+    <div class="team-grid">
+      {
+        homeTeam.map((member) => (
+          <PersonCard name={member.name} role={member.role} initials={member.initials} />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <CtaBand
+      title="Let's Build with Confidence"
+      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+      buttonLabel="Start a Conversation"
+      buttonHref="/contact"
     />
-  </body>
-</html>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: var(--s-6) var(--s-7);
+    position: relative;
+  }
+  .hero-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: var(--s-5);
+  }
+  .signal-card-wrap {
+    max-width: 340px;
+    width: 100%;
+  }
+  .signal-card-wrap .signal-card {
+    position: relative;
+  }
+  .signal-title {
+    font-size: var(--t-lg);
+    margin: var(--s-3) 0 var(--s-2);
+  }
+  .hero-micro {
+    font-family: var(--font-mono);
+    font-size: var(--t-sm);
+    color: var(--ink-2);
+    text-align: left;
+  }
+  .hero-word {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(3.25rem, 17vw, 16rem);
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    margin: var(--s-5) 0;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-7);
+    align-items: end;
+  }
+  .hero-thumbs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--s-4);
+  }
+  .trust-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+    align-items: center;
+  }
+  .trust-image {
+    flex: none;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+    align-items: center;
+  }
+  .section-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-bottom: var(--s-6);
+  }
+  .section-label .desc {
+    max-width: 30ch;
+    color: var(--ink-3);
+    font-size: var(--t-sm);
+  }
+  .proj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-4);
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+  .stats-row {
+    justify-content: space-between;
+    gap: var(--s-6);
+    padding-block: var(--s-6);
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 560px) {
+    .team-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .trust-card {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  @media (min-width: 700px) {
+    .section-label {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--s-4);
+    }
+    .section-label .desc {
+      margin-left: auto;
+      text-align: right;
+    }
+    .proj-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .hero-top {
+      grid-template-columns: 1fr auto;
+    }
+    .hero-micro {
+      text-align: right;
+      margin-left: auto;
+    }
+    .hero-grid {
+      grid-template-columns: 0.95fr 1.05fr;
+    }
+    .two-col {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-7);
+    }
+    .team-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

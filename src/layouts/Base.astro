@@ -1,0 +1,75 @@
+---
+import "../styles/rzest-ds.css";
+import { Header } from "../components/organisms/Header/Header";
+import { Footer } from "../components/organisms/Footer/Footer";
+import { siteConfig, navItems } from "../data/mock";
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = siteConfig.tagline } = Astro.props;
+const currentPath = new URL(Astro.request.url).pathname;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    />
+    <title>{title} — {siteConfig.brandLabel}</title>
+    <script is:inline>
+      // Apply a persisted theme before first paint to avoid a flash of the
+      // wrong theme. Header's ThemeToggle island re-reads the same key once
+      // it hydrates, so this is purely a pre-hydration sync, not a second
+      // source of truth.
+      try {
+        const stored = window.localStorage.getItem("rzest-theme");
+        if (stored === "dark" || stored === "light") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch {
+        // localStorage may be unavailable (privacy mode) — default theme applies.
+      }
+    </script>
+  </head>
+  <body>
+    <Header
+      client:load
+      brandLabel={siteConfig.brandLabel}
+      brandHref="/"
+      navItems={navItems}
+      currentPath={currentPath}
+      ctaLabel="Start a Conversation"
+      ctaHref="/contact"
+    />
+    <main>
+      <slot />
+    </main>
+    <Footer
+      brandLabel={siteConfig.brandLabel}
+      tagline={siteConfig.tagline}
+      ctaLabel="Start a Conversation"
+      ctaHref="/contact"
+      companyLinks={navItems.filter((item) => item.href !== "/")}
+      contactLinks={[
+        { label: siteConfig.email, href: `mailto:${siteConfig.email}` },
+        { label: siteConfig.phone1, href: `tel:${siteConfig.phone1.replace(/\s/g, "")}` },
+        { label: siteConfig.phone2, href: `tel:${siteConfig.phone2.replace(/\s/g, "")}` },
+        { label: siteConfig.linkedinLabel, href: siteConfig.linkedinHref },
+      ]}
+      copyrightLine={`© ${new Date().getFullYear()} ${siteConfig.brandLabel}. All rights reserved.`}
+      addressLine={siteConfig.address}
+    />
+  </body>
+</html>

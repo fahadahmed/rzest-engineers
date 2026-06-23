@@ -1,0 +1,147 @@
+---
+import Base from "../../layouts/Base.astro";
+import { Breadcrumb } from "../../components/molecules/Breadcrumb/Breadcrumb";
+import { Tag } from "../../components/atoms/Tag/Tag";
+import { Placeholder } from "../../components/atoms/Placeholder/Placeholder";
+import { Eyebrow } from "../../components/atoms/Eyebrow/Eyebrow";
+import { ProjectFacts } from "../../components/molecules/ProjectFacts/ProjectFacts";
+import { LinkArrow } from "../../components/atoms/LinkArrow/LinkArrow";
+import { CtaBand } from "../../components/organisms/CtaBand/CtaBand";
+import { projects } from "../../data/mock";
+import type { Project } from "../../types/dato";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const currentIndex = projects.findIndex((p) => p.slug === project.slug);
+const next = projects[(currentIndex + 1) % projects.length];
+
+const facts = [
+  { key: "Client", value: project.client },
+  { key: "Sector", value: project.sectorLabel },
+  { key: "Type", value: project.type },
+  { key: "Location", value: project.location },
+  { key: "Role", value: project.role },
+  { key: "Status", value: project.status },
+];
+---
+
+<Base title={project.title} description={project.tagline}>
+  <section class="wrap">
+    <Breadcrumb items={[{ label: "Projects", href: "/projects" }, { label: project.title }]} />
+    <div class="detail-title">
+      <div class="row" style="gap:var(--s-3); flex-wrap:wrap">
+        <Tag variant="solid">{project.sectorLabel}</Tag>
+        <Tag variant="ghost">{project.type}</Tag>
+      </div>
+      <h1 class="display">{project.title}</h1>
+      <p class="lede" style="max-width:48ch">{project.tagline}</p>
+    </div>
+    <Placeholder
+      src={project.heroImage.url}
+      alt={project.heroImage.alt}
+      label="Project hero photo"
+      height={300}
+      rounded="lg"
+      className="hero-shot"
+    />
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="body-grid">
+      <div>
+        <Eyebrow plain>Overview</Eyebrow>
+        <hr class="rule" style="margin:var(--s-3) 0 var(--s-5)" />
+        {project.overview.map((paragraph) => <p style="margin-bottom:var(--s-5)">{paragraph}</p>)}
+
+        <Eyebrow plain>Scope of Engineering</Eyebrow>
+        <hr class="rule" style="margin:var(--s-3) 0 var(--s-5)" />
+        <div class="row" style="gap:var(--s-3); flex-wrap:wrap">
+          {project.scopeItems.map((item) => <Tag>{item}</Tag>)}
+        </div>
+
+        <div class="gallery" style="margin-top:var(--s-8)">
+          {
+            project.gallery.map((image) => (
+              <Placeholder src={image.url} alt={image.alt} label={image.alt} height={160} />
+            ))
+          }
+        </div>
+      </div>
+
+      <ProjectFacts facts={facts} ctaLabel="Discuss a similar project" ctaHref="/contact" />
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-6)" />
+    <div class="nextprev">
+      <LinkArrow href="/projects" showArrow={false}>← All projects</LinkArrow>
+      <LinkArrow href={`/projects/${next.slug}`}>Next: {next.title}</LinkArrow>
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <CtaBand
+      title="Let's Build with Confidence"
+      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+      buttonLabel="Start a Conversation"
+      buttonHref="/contact"
+    />
+  </section>
+</Base>
+
+<style>
+  .detail-title {
+    padding-block: var(--s-5) var(--s-6);
+  }
+  .detail-title h1 {
+    font-size: var(--t-3xl);
+    max-width: 18ch;
+    margin: var(--s-4) 0;
+  }
+  .hero-shot {
+    height: 300px;
+  }
+  .body-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-7);
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+  .nextprev {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    justify-content: space-between;
+    align-items: center;
+  }
+  @media (min-width: 620px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .hero-shot {
+      height: 440px;
+    }
+  }
+  @media (min-width: 920px) {
+    .body-grid {
+      grid-template-columns: 1.6fr 0.9fr;
+      gap: var(--s-8);
+      align-items: start;
+    }
+  }
+</style>

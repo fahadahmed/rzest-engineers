@@ -3,6 +3,13 @@ import { render, screen } from "@testing-library/react";
 import { PageHero } from "./PageHero";
 
 describe("PageHero", () => {
+  it("includes the wrap class so its content aligns with the rest of the page", () => {
+    const { container } = render(
+      <PageHero eyebrow="About RZest Engineers" title="Engineering built on integrity" />,
+    );
+    expect(container.firstChild).toHaveClass("wrap", "page-hero");
+  });
+
   it("renders eyebrow, title and description", () => {
     render(
       <PageHero

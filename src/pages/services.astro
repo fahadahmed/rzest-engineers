@@ -1,0 +1,184 @@
+---
+import Base from "../layouts/Base.astro";
+import { PageHero } from "../components/molecules/PageHero/PageHero";
+import { StatStrip } from "../components/molecules/StatStrip/StatStrip";
+import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
+import { SignalCard } from "../components/molecules/SignalCard/SignalCard";
+import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
+import { globalStats, services, processSteps, servicesIntro } from "../data/mock";
+---
+
+<Base title="Services" description={servicesIntro.lede}>
+  <PageHero eyebrow="Our Services" title={servicesIntro.title} description={servicesIntro.lede}>
+    <StatStrip stats={globalStats} />
+  </PageHero>
+
+  <section class="wrap section">
+    <div class="intro-grid">
+      <div>
+        <Eyebrow plain>Introduction</Eyebrow>
+        <h2 class="display" style="font-size:var(--t-2xl); margin:var(--s-4) 0; max-width:22ch">
+          {servicesIntro.introTitle}
+        </h2>
+        <p class="lede" style="max-width:54ch">{servicesIntro.introBody}</p>
+      </div>
+      <SignalCard eyebrow={servicesIntro.signalEyebrow} title={servicesIntro.signalTitle} />
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="section-label">
+      <Eyebrow>What We Do</Eyebrow>
+      <p class="desc">Six integrated service lines.</p>
+    </div>
+    <div class="svc-cards">
+      {
+        services.map((service) => (
+          <article class="svc-card">
+            <div class="idx">{service.index}</div>
+            <h3>{service.name}</h3>
+            <p>{service.shortDescription}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <div class="section-label">
+      <Eyebrow>Engineering Approach</Eyebrow>
+      <p class="desc">Designing for performance, efficiency & buildability.</p>
+    </div>
+    <h2 class="display" style="font-size:var(--t-2xl); max-width:20ch; margin-bottom:var(--s-7)">
+      {servicesIntro.processTitle}
+    </h2>
+    <div class="process">
+      {
+        processSteps.map((step) => (
+          <div class="step">
+            <div class="n">{step.number}</div>
+            <div class="nm">{step.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <CtaBand
+      variant="ink"
+      title="Let's Build with Confidence"
+      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+      buttonLabel="Start a Conversation"
+      buttonHref="/contact"
+    />
+  </section>
+</Base>
+
+<style>
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+  .section-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    margin-bottom: var(--s-6);
+  }
+  .section-label .desc {
+    max-width: 30ch;
+    color: var(--ink-3);
+    font-size: var(--t-sm);
+  }
+  .svc-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  .svc-card {
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: var(--s-6);
+    transition:
+      border-color 0.2s,
+      transform 0.2s;
+  }
+  .svc-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-4px);
+  }
+  .svc-card .idx {
+    font-family: var(--font-mono);
+    font-size: var(--t-sm);
+    color: var(--signal-deep);
+    letter-spacing: 0.1em;
+  }
+  .svc-card h3 {
+    font-size: var(--t-lg);
+    margin: var(--s-4) 0 var(--s-3);
+  }
+  .process {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    background: var(--line);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+  .step {
+    background: var(--surface);
+    padding: var(--s-5);
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .step .n {
+    font-family: var(--font-mono);
+    font-size: var(--t-xl);
+    color: var(--ink-3);
+  }
+  .step .nm {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--t-md);
+  }
+  .step:hover {
+    background: var(--signal-tint);
+  }
+  @media (min-width: 620px) {
+    .svc-cards {
+      grid-template-columns: 1fr 1fr;
+    }
+    .process {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media (min-width: 980px) {
+    .svc-cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .process {
+      grid-template-columns: repeat(7, 1fr);
+    }
+    .intro-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: var(--s-7);
+      align-items: center;
+    }
+    .section-label {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--s-4);
+    }
+    .section-label .desc {
+      margin-left: auto;
+      text-align: right;
+    }
+  }
+</style>
