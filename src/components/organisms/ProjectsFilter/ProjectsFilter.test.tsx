@@ -41,6 +41,28 @@ describe("ProjectsFilter", () => {
     expect(screen.queryByText("Strata Estate")).not.toBeInTheDocument();
   });
 
+  it("exposes the active filter via aria-pressed", async () => {
+    render(<ProjectsFilter projects={projects} sectors={sectors} />);
+    expect(screen.getByRole("button", { name: "All Projects" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(screen.getByRole("button", { name: "Commercial" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Commercial" }));
+    expect(screen.getByRole("button", { name: "All Projects" })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+    expect(screen.getByRole("button", { name: "Commercial" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
   it("shows the no-results message when a sector has no matches", async () => {
     render(
       <ProjectsFilter

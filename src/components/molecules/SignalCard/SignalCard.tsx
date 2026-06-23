@@ -7,6 +7,7 @@ export interface SignalCardProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
   title: ReactNode;
   description?: ReactNode;
   cornerLabel?: string;
+  cornerHref?: string;
   onCornerClick?: () => void;
   footer?: ReactNode;
 }
@@ -16,12 +17,14 @@ export function SignalCard({
   title,
   description,
   cornerLabel = "Open",
+  cornerHref,
   onCornerClick,
   footer,
   className = "",
   ...rest
 }: SignalCardProps) {
   const classes = ["signal-card", className].filter(Boolean).join(" ");
+  const hasCornerAction = Boolean(cornerHref || onCornerClick);
 
   return (
     <div className={classes} {...rest}>
@@ -29,9 +32,21 @@ export function SignalCard({
       <h3 style={{ margin: "var(--s-4) 0 var(--s-3)", fontSize: "var(--t-lg)" }}>{title}</h3>
       {description && <p style={{ color: "var(--on-signal)", opacity: 0.85 }}>{description}</p>}
       <div className="corner">
-        <IconButton variant="accent" aria-label={cornerLabel} onClick={onCornerClick}>
-          →
-        </IconButton>
+        {hasCornerAction ? (
+          cornerHref ? (
+            <IconButton variant="accent" aria-label={cornerLabel} href={cornerHref}>
+              →
+            </IconButton>
+          ) : (
+            <IconButton variant="accent" aria-label={cornerLabel} onClick={onCornerClick}>
+              →
+            </IconButton>
+          )
+        ) : (
+          <span className="icon-btn icon-btn--accent" aria-hidden="true">
+            →
+          </span>
+        )}
       </div>
       {footer}
     </div>

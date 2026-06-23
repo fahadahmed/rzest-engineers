@@ -55,15 +55,20 @@ export function Header({
               className="nav-burger"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
               onClick={() => setMenuOpen((open) => !open)}
             >
               {menuOpen ? "✕" : "☰"}
             </IconButton>
           </div>
         </div>
-        <nav className={`mobile-menu${menuOpen ? " is-open" : ""}`}>
+        <nav id="mobile-menu" className={`mobile-menu${menuOpen ? " is-open" : ""}`}>
           {navItems.map((item) => (
-            <a key={item.href} href={item.href}>
+            <a
+              key={item.href}
+              href={item.href}
+              className={item.href === currentPath ? "is-active" : ""}
+            >
               {item.label}
             </a>
           ))}

@@ -45,6 +45,7 @@ export function ProjectsFilter({
         <button
           type="button"
           className={`chip${activeSector === "all" ? " is-active" : ""}`}
+          aria-pressed={activeSector === "all"}
           onClick={() => setActiveSector("all")}
         >
           {allLabel}
@@ -54,6 +55,7 @@ export function ProjectsFilter({
             key={sector.value}
             type="button"
             className={`chip${activeSector === sector.value ? " is-active" : ""}`}
+            aria-pressed={activeSector === sector.value}
             onClick={() => setActiveSector(sector.value)}
           >
             {sector.label}

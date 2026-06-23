@@ -7,7 +7,7 @@ const sectors = ["Commercial", "Residential", "Institutional"];
 
 describe("ContactForm", () => {
   it("renders all fields and the submit button", () => {
-    render(<ContactForm sectors={sectors} />);
+    render(<ContactForm sectors={sectors} onSubmit={vi.fn()} />);
     expect(screen.getByLabelText("Full name")).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Company")).toBeInTheDocument();

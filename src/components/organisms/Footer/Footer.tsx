@@ -51,21 +51,29 @@ export function Footer({
           <div>
             <div className="f-head">Company</div>
             <div className="stack" style={{ gap: "10px", marginTop: "var(--s-4)" }}>
-              {companyLinks.map((link) => (
-                <a key={link.label} href={link.href}>
-                  {link.label}
-                </a>
-              ))}
+              {companyLinks.map((link) =>
+                link.href ? (
+                  <a key={link.label} href={link.href}>
+                    {link.label}
+                  </a>
+                ) : (
+                  <span key={link.label}>{link.label}</span>
+                ),
+              )}
             </div>
           </div>
           <div>
             <div className="f-head">Contact</div>
             <div className="stack" style={{ gap: "10px", marginTop: "var(--s-4)" }}>
-              {contactLinks.map((link) => (
-                <a key={link.label} href={link.href}>
-                  {link.label}
-                </a>
-              ))}
+              {contactLinks.map((link) =>
+                link.href ? (
+                  <a key={link.label} href={link.href}>
+                    {link.label}
+                  </a>
+                ) : (
+                  <span key={link.label}>{link.label}</span>
+                ),
+              )}
             </div>
           </div>
         </div>

@@ -23,10 +23,12 @@ describe("Header", () => {
     );
     expect(screen.getByText("RZest Engineers")).toBeInTheDocument();
     const aboutLinks = screen.getAllByRole("link", { name: "About" });
+    expect(aboutLinks).toHaveLength(2);
     expect(aboutLinks[0]).toHaveClass("is-active");
+    expect(aboutLinks[1]).toHaveClass("is-active");
   });
 
-  it("opens and closes the mobile menu", async () => {
+  it("opens and closes the mobile menu, with aria-controls pointing at it", async () => {
     render(
       <Header
         brandLabel="RZest Engineers"
@@ -38,8 +40,11 @@ describe("Header", () => {
       />,
     );
     const toggle = screen.getByRole("button", { name: "Open menu" });
+    expect(toggle).toHaveAttribute("aria-controls", "mobile-menu");
+
     await userEvent.click(toggle);
     expect(screen.getByRole("button", { name: "Close menu" })).toBeInTheDocument();
+    expect(document.getElementById("mobile-menu")).toHaveClass("is-open");
   });
 
   it("renders the CTA button pointing at ctaHref", () => {

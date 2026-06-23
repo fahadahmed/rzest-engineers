@@ -6,6 +6,14 @@ type Theme = "light" | "dark";
 
 function getInitialTheme(): Theme {
   if (typeof document === "undefined") return "light";
+
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored === "dark" || stored === "light") return stored;
+  } catch {
+    // localStorage may be unavailable (privacy mode, SSR) — fall back to the DOM attribute.
+  }
+
   const current = document.documentElement.getAttribute("data-theme");
   return current === "dark" ? "dark" : "light";
 }

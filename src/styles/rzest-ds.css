@@ -890,6 +890,14 @@ hr {
   text-transform: uppercase;
 }
 
+.mobile-menu a {
+  color: var(--ink-2);
+}
+
+.mobile-menu a.is-active {
+  color: var(--ink);
+}
+
 .mobile-menu.is-open {
   display: flex;
 }

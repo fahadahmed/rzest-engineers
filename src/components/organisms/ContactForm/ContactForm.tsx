@@ -14,7 +14,7 @@ export interface ContactFormData {
 
 export interface ContactFormProps {
   sectors: string[];
-  onSubmit?: (data: ContactFormData) => Promise<void> | void;
+  onSubmit: (data: ContactFormData) => Promise<void> | void;
   submitLabel?: string;
   thanksTitle?: string;
   thanksDescription?: string;
@@ -60,7 +60,7 @@ export function ContactForm({
     setErrorMessage(null);
 
     try {
-      await onSubmit?.(data);
+      await onSubmit(data);
       setStatus("success");
     } catch {
       setStatus("error");
