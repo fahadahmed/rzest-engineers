@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rzestengineers.com/sitemap-index.xml

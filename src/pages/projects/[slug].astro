@@ -34,9 +34,24 @@ const facts = [
   { key: "Role", value: project.role },
   { key: "Status", value: project.status },
 ];
+
+const projectJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: project.title,
+  description: project.tagline,
+  image: project.heroImage.url,
+  about: project.sectorLabel,
+  locationCreated: project.location,
+  provider: {
+    "@type": "Organization",
+    name: "RZest Engineers",
+  },
+};
 ---
 
-<Base title={project.title} description={project.tagline}>
+<Base title={project.title} description={project.tagline} ogImage={project.heroImage.url} ogType="article">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(projectJsonLd)} />
   <section class="wrap">
     <Breadcrumb items={[{ label: "Projects", href: "/projects" }, { label: project.title }]} />
     <div class="detail-title">
