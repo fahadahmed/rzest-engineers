@@ -24,3 +24,11 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+*storybook.log
+storybook-static
+
+# playwright visual regression
+test-results/
+playwright-report/
+blob-report/
