@@ -1,0 +1,14 @@
+{
+  "parameters": {
+    "contact_recipient_email": {
+      "defaultValue": {
+        "value": "fahad.ahmed@me.com"
+      },
+      "description": "Destination address for contact form submissions. Editable in the Firebase console without a code deploy.",
+      "valueType": "STRING"
+    }
+  },
+  "version": {
+    "description": "Initial template"
+  }
+}
