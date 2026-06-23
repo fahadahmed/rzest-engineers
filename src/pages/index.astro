@@ -1,6 +1,8 @@
 ---
+import "../styles/pages/home.css";
 import Base from "../layouts/Base.astro";
 import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
+import { SignalCard } from "../components/molecules/SignalCard/SignalCard";
 import { Placeholder } from "../components/atoms/Placeholder/Placeholder";
 import { Button } from "../components/atoms/Button/Button";
 import { LinkArrow } from "../components/atoms/LinkArrow/LinkArrow";
@@ -34,10 +36,7 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
   <section class="wrap hero">
     <div class="hero-top">
       <div class="signal-card-wrap">
-        <div class="signal-card">
-          <Eyebrow>{homeHero.signalEyebrow}</Eyebrow>
-          <h3 class="signal-title">{homeHero.signalTitle}</h3>
-        </div>
+        <SignalCard eyebrow={homeHero.signalEyebrow} title={homeHero.signalTitle} />
       </div>
       <p class="microcopy hero-micro">{homeHero.microcopy}</p>
     </div>
@@ -50,8 +49,6 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
           src={homeHero.heroImage.url}
           alt={homeHero.heroImage.alt}
           label="Site photo"
-          height={300}
-          rounded="lg"
           className="hero-shot"
         />
         <p class="lede" style="max-width:38ch; margin-top:var(--s-5)">
@@ -229,137 +226,3 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
     />
   </section>
 </Base>
-
-<style>
-  .hero {
-    padding-block: var(--s-6) var(--s-7);
-    position: relative;
-  }
-  .hero-top {
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: start;
-    gap: var(--s-5);
-  }
-  .signal-card-wrap {
-    max-width: 340px;
-    width: 100%;
-  }
-  .signal-card-wrap .signal-card {
-    position: relative;
-  }
-  .signal-title {
-    font-size: var(--t-lg);
-    margin: var(--s-3) 0 var(--s-2);
-  }
-  .hero-micro {
-    font-family: var(--font-mono);
-    font-size: var(--t-sm);
-    color: var(--ink-2);
-    text-align: left;
-  }
-  .hero-word {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: clamp(3.25rem, 17vw, 16rem);
-    line-height: 0.82;
-    letter-spacing: -0.05em;
-    text-transform: uppercase;
-    margin: var(--s-5) 0;
-  }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-7);
-    align-items: end;
-  }
-  .hero-thumbs {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: var(--s-4);
-  }
-  .trust-card {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-5);
-    align-items: center;
-  }
-  .trust-image {
-    flex: none;
-  }
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-6);
-    align-items: center;
-  }
-  .section-label {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-2);
-    margin-bottom: var(--s-6);
-  }
-  .section-label .desc {
-    max-width: 30ch;
-    color: var(--ink-3);
-    font-size: var(--t-sm);
-  }
-  .proj-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-4);
-  }
-  .team-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-4);
-  }
-  .stats-row {
-    justify-content: space-between;
-    gap: var(--s-6);
-    padding-block: var(--s-6);
-    flex-wrap: wrap;
-  }
-
-  @media (min-width: 560px) {
-    .team-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-    .trust-card {
-      grid-template-columns: 1fr auto;
-    }
-  }
-  @media (min-width: 700px) {
-    .section-label {
-      flex-direction: row;
-      align-items: baseline;
-      gap: var(--s-4);
-    }
-    .section-label .desc {
-      margin-left: auto;
-      text-align: right;
-    }
-    .proj-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  @media (min-width: 900px) {
-    .hero-top {
-      grid-template-columns: 1fr auto;
-    }
-    .hero-micro {
-      text-align: right;
-      margin-left: auto;
-    }
-    .hero-grid {
-      grid-template-columns: 0.95fr 1.05fr;
-    }
-    .two-col {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s-7);
-    }
-    .team-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-</style>

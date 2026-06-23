@@ -35,16 +35,16 @@ export function SignalCard({
         {hasCornerAction ? (
           cornerHref ? (
             <IconButton variant="accent" aria-label={cornerLabel} href={cornerHref}>
-              →
+              ↗
             </IconButton>
           ) : (
             <IconButton variant="accent" aria-label={cornerLabel} onClick={onCornerClick}>
-              →
+              ↗
             </IconButton>
           )
         ) : (
           <span className="icon-btn icon-btn--accent" aria-hidden="true">
-            →
+            ↗
           </span>
         )}
       </div>

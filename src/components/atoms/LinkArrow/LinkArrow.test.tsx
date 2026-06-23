@@ -7,7 +7,7 @@ describe("LinkArrow", () => {
     render(<LinkArrow href="/projects">View projects</LinkArrow>);
     const link = screen.getByRole("link", { name: /View projects/ });
     expect(link).toHaveClass("link-arrow");
-    expect(link).toHaveTextContent("→");
+    expect(link).toHaveTextContent("↗");
   });
 
   it("omits the arrow glyph when showArrow is false", () => {
@@ -16,6 +16,6 @@ describe("LinkArrow", () => {
         View projects
       </LinkArrow>,
     );
-    expect(screen.getByRole("link")).not.toHaveTextContent("→");
+    expect(screen.getByRole("link")).not.toHaveTextContent("↗");
   });
 });

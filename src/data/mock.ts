@@ -31,8 +31,8 @@ export const siteConfig: SiteConfig = {
   email: "rzest@engineers.com",
   phone1: "+92 99065 4171",
   phone2: "+92 99065 0072",
-  address: "48-A/21, Nadia Sector A/2, Umar Kot — 69100",
-  linkedinLabel: "LinkedIn →",
+  address: "48-A/21, Nadia Sector A/2, Umar Kot – 69100",
+  linkedinLabel: "LinkedIn ↗",
 };
 
 export const navItems: NavItem[] = [
@@ -139,10 +139,10 @@ export const processSteps: ProcessStep[] = [
 ];
 
 export const partners: Partner[] = [
-  { tagLabel: "✦ Architecture", name: "Studio Forma", meta: "Architecture & Interior · Karachi" },
-  { tagLabel: "✦ Urban", name: "Axis Architects", meta: "Urban & Institutional · Lahore" },
+  { tagLabel: "● Architecture", name: "Studio Forma", meta: "Architecture & Interior · Karachi" },
+  { tagLabel: "● Urban", name: "Axis Architects", meta: "Urban & Institutional · Lahore" },
   {
-    tagLabel: "✦ Commercial",
+    tagLabel: "● Commercial",
     name: "Meridian Design Group",
     meta: "Commercial & Hospitality · Dubai",
   },

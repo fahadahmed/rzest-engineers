@@ -29,4 +29,9 @@ describe("StatStrip", () => {
     );
     expect(container.querySelectorAll(".vrule")).toHaveLength(2);
   });
+
+  it("applies vertical breathing room (padding-block) matching the mockups' .stat-strip", () => {
+    const { container } = render(<StatStrip stats={[{ value: "100", label: "Projects" }]} />);
+    expect(container.firstChild).toHaveStyle({ paddingBlock: "var(--s-6)" });
+  });
 });

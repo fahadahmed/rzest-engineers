@@ -1,4 +1,5 @@
 ---
+import "../styles/pages/contact.css";
 import Base from "../layouts/Base.astro";
 import { PageHero } from "../components/molecules/PageHero/PageHero";
 import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
@@ -11,6 +12,8 @@ import { siteConfig, contactPageCopy } from "../data/mock";
   <PageHero
     eyebrow="Contact"
     title={`${contactPageCopy.title} ${contactPageCopy.accent}`}
+    titleMaxWidth="14ch"
+    accentText={contactPageCopy.accent}
     description={contactPageCopy.lede}
   />
 
@@ -51,48 +54,3 @@ import { siteConfig, contactPageCopy } from "../data/mock";
     </div>
   </section>
 </Base>
-
-<style>
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--s-7);
-  }
-  .info-card {
-    border: 1.5px solid var(--line);
-    border-radius: var(--r-lg);
-    padding: var(--s-6);
-  }
-  .info-row {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: var(--s-4) 0;
-    border-top: 1px dashed var(--line);
-  }
-  .info-row:first-of-type {
-    border-top: 0;
-  }
-  .info-row .k {
-    font-family: var(--font-mono);
-    font-size: var(--t-mono);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .info-row .v {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--t-md);
-  }
-  .info-card :global(.placeholder) {
-    margin-top: var(--s-5);
-  }
-  @media (min-width: 940px) {
-    .contact-grid {
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: var(--s-8);
-      align-items: start;
-    }
-  }
-</style>

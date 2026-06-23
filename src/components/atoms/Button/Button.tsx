@@ -44,7 +44,7 @@ export function Button(props: ButtonProps) {
   const content = (
     <>
       {children}
-      {showArrow && <span className="arr"> →</span>}
+      {showArrow && <span className="arr"> ↗</span>}
     </>
   );
 

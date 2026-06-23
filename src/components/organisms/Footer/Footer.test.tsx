@@ -40,12 +40,12 @@ describe("Footer", () => {
         ctaLabel="Start a Conversation"
         ctaHref="/contact"
         companyLinks={[{ label: "About", href: "/about" }]}
-        contactLinks={[{ label: "LinkedIn →" }]}
+        contactLinks={[{ label: "LinkedIn ↗" }]}
         copyrightLine="© 2026 RZest Engineers. All rights reserved."
         addressLine="48-A/21, Nadia Sector A/2, Umar Kot — 69100"
       />,
     );
-    expect(screen.getByText("LinkedIn →")).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "LinkedIn →" })).not.toBeInTheDocument();
+    expect(screen.getByText("LinkedIn ↗")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "LinkedIn ↗" })).not.toBeInTheDocument();
   });
 });

@@ -11,7 +11,7 @@ describe("IconButton", () => {
   it("renders as a link when href is given", () => {
     render(
       <IconButton aria-label="Go to contact" href="/contact">
-        →
+        ↗
       </IconButton>,
     );
     expect(screen.getByRole("link", { name: "Go to contact" })).toHaveAttribute("href", "/contact");
@@ -24,6 +24,6 @@ describe("IconButton", () => {
 
   it("defaults to an arrow glyph", () => {
     render(<IconButton aria-label="Default" />);
-    expect(screen.getByRole("button")).toHaveTextContent("→");
+    expect(screen.getByRole("button")).toHaveTextContent("↗");
   });
 });

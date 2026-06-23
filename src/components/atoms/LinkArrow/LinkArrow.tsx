@@ -10,7 +10,7 @@ export function LinkArrow({ children, showArrow = true, className = "", ...rest 
   return (
     <a className={classes} {...rest}>
       <span>{children}</span>
-      {showArrow && <span>→</span>}
+      {showArrow && <span>↗</span>}
     </a>
   );
 }

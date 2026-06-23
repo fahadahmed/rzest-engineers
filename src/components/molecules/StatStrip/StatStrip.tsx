@@ -16,7 +16,10 @@ export function StatStrip({ stats, dividerHeight = 64, className = "" }: StatStr
   const classes = ["row", className].filter(Boolean).join(" ");
 
   return (
-    <div className={classes} style={{ gap: "var(--s-6)", flexWrap: "wrap" }}>
+    <div
+      className={classes}
+      style={{ gap: "var(--s-6)", flexWrap: "wrap", paddingBlock: "var(--s-6)" }}
+    >
       {stats.map((stat, idx) => (
         <div key={stat.label} className="row" style={{ gap: "var(--s-6)" }}>
           <div className="stat">
