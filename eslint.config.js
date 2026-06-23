@@ -7,12 +7,20 @@ import tseslint from "typescript-eslint";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import astro from "eslint-plugin-astro";
+import storybook from "eslint-plugin-storybook";
 import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
 
 export default tseslint.config(
   {
-    ignores: ["dist/**", ".astro/**", "coverage/**", "node_modules/**", "functions/**"],
+    ignores: [
+      "dist/**",
+      ".astro/**",
+      "coverage/**",
+      "node_modules/**",
+      "functions/**",
+      "storybook-static/**",
+    ],
   },
   js.configs.recommended,
   tseslint.configs.recommended,
@@ -42,5 +50,6 @@ export default tseslint.config(
     },
   },
   ...astro.configs["flat/recommended"],
+  ...storybook.configs["flat/recommended"],
   eslintConfigPrettier,
 );
