@@ -1,0 +1,85 @@
+---
+import "../../styles/pages/projects.css";
+import Base from "../../layouts/Base.astro";
+import { PageHero } from "../../components/molecules/PageHero/PageHero";
+import { StatStrip } from "../../components/molecules/StatStrip/StatStrip";
+import { Eyebrow } from "../../components/atoms/Eyebrow/Eyebrow";
+import { Placeholder } from "../../components/atoms/Placeholder/Placeholder";
+import { Button } from "../../components/atoms/Button/Button";
+import { Tag } from "../../components/atoms/Tag/Tag";
+import { ProjectsFilter } from "../../components/organisms/ProjectsFilter/ProjectsFilter";
+import { CtaBand } from "../../components/organisms/CtaBand/CtaBand";
+import { globalStats, projects } from "../../data/mock";
+
+const filterableProjects = projects.map((project) => ({
+  id: project.id,
+  href: `/projects/${project.slug}`,
+  title: project.title,
+  meta: `${project.sectorLabel} · ${project.client}`,
+  sector: project.sector,
+  thumbnailSrc: project.thumbnail.url,
+}));
+
+const sectors = [
+  { label: "Commercial", value: "commercial" },
+  { label: "Residential", value: "residential" },
+  { label: "Institutional", value: "institutional" },
+  { label: "Industrial", value: "industrial" },
+];
+
+const featured = projects.find((project) => project.featured) ?? projects[0];
+---
+
+<Base title="Projects" description="Projects across diverse sectors and scale.">
+  <PageHero
+    eyebrow="Projects"
+    title="Projects across diverse sectors and scale"
+    titleMaxWidth="16ch"
+    accentText="sectors and scale"
+    description="Our portfolio reflects extensive experience across residential, commercial, industrial, healthcare, hospitality, and institutional developments."
+  >
+    <StatStrip stats={globalStats} />
+  </PageHero>
+
+  <section class="wrap section">
+    <ProjectsFilter client:load projects={filterableProjects} sectors={sectors} />
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <Eyebrow>Featured Case Study</Eyebrow>
+    <div class="case-grid" style="margin-top:var(--s-6)">
+      <Placeholder
+        src={featured.heroImage.url}
+        alt={featured.heroImage.alt}
+        label={featured.title}
+        height={380}
+        rounded="lg"
+      />
+      <div>
+        <Tag variant="solid">{featured.sectorLabel}</Tag>
+        <h2 class="display" style="font-size:var(--t-2xl); margin:var(--s-4) 0">
+          {featured.caseStudyTitle}
+        </h2>
+        <p class="lede" style="max-width:52ch">{featured.caseStudyBody}</p>
+        <Button
+          href={`/projects/${featured.slug}`}
+          variant="primary"
+          showArrow
+          style={{ marginTop: "var(--s-6)" }}
+        >
+          Read full case study
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <CtaBand
+      title="Let's Build with Confidence"
+      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+      buttonLabel="Start a Conversation"
+      buttonHref="/contact"
+    />
+  </section>
+</Base>

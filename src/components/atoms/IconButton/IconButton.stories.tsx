@@ -13,13 +13,13 @@ export default meta;
 type Story = StoryObj<typeof IconButton>;
 
 export const Default: Story = {
-  args: { children: "→" },
+  args: { children: "↗" },
 };
 
 export const Accent: Story = {
-  args: { variant: "accent", children: "→" },
+  args: { variant: "accent", children: "↗" },
 };
 
 export const AsLink: Story = {
-  args: { href: "/services", "aria-label": "Go to services", children: "→" },
+  args: { href: "/services", "aria-label": "Go to services", children: "↗" },
 };

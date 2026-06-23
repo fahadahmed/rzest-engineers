@@ -17,7 +17,7 @@ type IconButtonAsButton = CommonProps &
 export type IconButtonProps = IconButtonAsLink | IconButtonAsButton;
 
 export function IconButton(props: IconButtonProps) {
-  const { variant = "default", className = "", children = "→", ...rest } = props;
+  const { variant = "default", className = "", children = "↗", ...rest } = props;
   const classes = ["icon-btn", variant === "accent" ? "icon-btn--accent" : "", className]
     .filter(Boolean)
     .join(" ");

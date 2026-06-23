@@ -20,7 +20,7 @@ describe("Button", () => {
 
   it("shows the arrow glyph when showArrow is set", () => {
     render(<Button showArrow>Explore Services</Button>);
-    expect(screen.getByText("→")).toBeInTheDocument();
+    expect(screen.getByText("↗")).toBeInTheDocument();
   });
 
   it("fires onClick for button variants", async () => {

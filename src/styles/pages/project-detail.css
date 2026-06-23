@@ -1,0 +1,54 @@
+/* Layout for src/pages/projects/[slug].astro */
+
+.detail-title {
+  padding-block: var(--s-5) var(--s-6);
+}
+
+.detail-title h1 {
+  font-size: var(--t-3xl);
+  max-width: 18ch;
+  margin: var(--s-4) 0;
+}
+
+.hero-shot {
+  height: 300px;
+}
+
+.body-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-7);
+  margin-top: var(--s-7);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+
+.nextprev {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 620px) {
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-shot {
+    height: 440px;
+  }
+}
+
+@media (min-width: 920px) {
+  .body-grid {
+    grid-template-columns: 1.6fr 0.9fr;
+    gap: var(--s-8);
+    align-items: start;
+  }
+}

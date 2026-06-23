@@ -18,6 +18,12 @@ type Story = StoryObj<typeof PageHero>;
 
 export const Default: Story = {};
 
+export const WithAccentText: Story = {
+  args: {
+    accentText: "precision",
+  },
+};
+
 export const WithStats: Story = {
   args: {
     children: (

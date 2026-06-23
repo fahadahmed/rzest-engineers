@@ -1,0 +1,15 @@
+/* Layout for src/pages/projects/index.astro */
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-6);
+  align-items: center;
+}
+
+@media (min-width: 920px) {
+  .case-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-8);
+  }
+}

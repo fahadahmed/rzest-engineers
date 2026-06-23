@@ -1,0 +1,84 @@
+---
+import "../styles/pages/services.css";
+import Base from "../layouts/Base.astro";
+import { PageHero } from "../components/molecules/PageHero/PageHero";
+import { StatStrip } from "../components/molecules/StatStrip/StatStrip";
+import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
+import { SignalCard } from "../components/molecules/SignalCard/SignalCard";
+import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
+import { globalStats, services, processSteps, servicesIntro } from "../data/mock";
+---
+
+<Base title="Services" description={servicesIntro.lede}>
+  <PageHero
+    eyebrow="Our Services"
+    title={servicesIntro.title}
+    accentText="Project Consultancy"
+    accentColor="var(--ink-3)"
+    description={servicesIntro.lede}
+  >
+    <StatStrip stats={globalStats} />
+  </PageHero>
+
+  <section class="wrap section">
+    <div class="intro-grid">
+      <div>
+        <Eyebrow plain>Introduction</Eyebrow>
+        <h2 class="display" style="font-size:var(--t-2xl); margin:var(--s-4) 0; max-width:22ch">
+          {servicesIntro.introTitle}
+        </h2>
+        <p class="lede" style="max-width:54ch">{servicesIntro.introBody}</p>
+      </div>
+      <SignalCard eyebrow={servicesIntro.signalEyebrow} title={servicesIntro.signalTitle} />
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="section-label">
+      <Eyebrow>What We Do</Eyebrow>
+      <p class="desc">Six integrated service lines.</p>
+    </div>
+    <div class="svc-cards">
+      {
+        services.map((service) => (
+          <article class="svc-card">
+            <div class="idx">{service.index}</div>
+            <h3>{service.name}</h3>
+            <p>{service.shortDescription}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <hr class="rule" style="margin-bottom:var(--s-7)" />
+    <div class="section-label">
+      <Eyebrow>Engineering Approach</Eyebrow>
+      <p class="desc">Designing for performance, efficiency & buildability.</p>
+    </div>
+    <h2 class="display" style="font-size:var(--t-2xl); max-width:20ch; margin-bottom:var(--s-7)">
+      {servicesIntro.processTitle}
+    </h2>
+    <div class="process">
+      {
+        processSteps.map((step) => (
+          <div class="step">
+            <div class="n">{step.number}</div>
+            <div class="nm">{step.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:0">
+    <CtaBand
+      variant="ink"
+      title="Let's Build with Confidence"
+      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+      buttonLabel="Start a Conversation"
+      buttonHref="/contact"
+    />
+  </section>
+</Base>

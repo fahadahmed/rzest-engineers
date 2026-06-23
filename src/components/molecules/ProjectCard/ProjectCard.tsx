@@ -28,7 +28,7 @@ export function ProjectCard({
           <div className="pc-meta">{meta}</div>
         </div>
         <span className="icon-btn" aria-hidden="true">
-          →
+          ↗
         </span>
       </div>
     </a>

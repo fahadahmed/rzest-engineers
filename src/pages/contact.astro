@@ -1,0 +1,56 @@
+---
+import "../styles/pages/contact.css";
+import Base from "../layouts/Base.astro";
+import { PageHero } from "../components/molecules/PageHero/PageHero";
+import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
+import { Placeholder } from "../components/atoms/Placeholder/Placeholder";
+import { ContactFormSection } from "../sections/ContactFormSection";
+import { siteConfig, contactPageCopy } from "../data/mock";
+---
+
+<Base title="Contact" description={contactPageCopy.lede}>
+  <PageHero
+    eyebrow="Contact"
+    title={`${contactPageCopy.title} ${contactPageCopy.accent}`}
+    titleMaxWidth="14ch"
+    accentText={contactPageCopy.accent}
+    description={contactPageCopy.lede}
+  />
+
+  <section class="wrap section">
+    <div class="contact-grid">
+      <ContactFormSection client:load />
+
+      <aside class="info-card">
+        <Eyebrow>Direct lines</Eyebrow>
+        <div style="margin-top:var(--s-4)">
+          <div class="info-row">
+            <span class="k">Email</span>
+            <a class="v" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          </div>
+          <div class="info-row">
+            <span class="k">Phone</span>
+            <a class="v" href={`tel:${siteConfig.phone1.replace(/\s/g, "")}`}>{siteConfig.phone1}</a
+            >
+            <a
+              class="v"
+              href={`tel:${siteConfig.phone2.replace(/\s/g, "")}`}
+              style="font-size:var(--t-sm)">{siteConfig.phone2}</a
+            >
+          </div>
+          <div class="info-row">
+            <span class="k">Studio</span>
+            <span class="v" style="font-size:var(--t-sm); line-height:1.4"
+              >{siteConfig.address}</span
+            >
+          </div>
+          <div class="info-row">
+            <span class="k">Social</span>
+            <span class="v" style="font-size:var(--t-sm)">{siteConfig.linkedinLabel}</span>
+          </div>
+        </div>
+        <Placeholder label="Map / location" height={150} />
+      </aside>
+    </div>
+  </section>
+</Base>

@@ -18,7 +18,7 @@ const meta: Meta<typeof Footer> = {
     contactLinks: [
       { label: "rzest@engineers.com", href: "mailto:rzest@engineers.com" },
       { label: "+92 99065 4171", href: "tel:+92990654171" },
-      { label: "LinkedIn →" },
+      { label: "LinkedIn ↗" },
     ],
     copyrightLine: "© 2026 RZest Engineers. All rights reserved.",
     addressLine: "48-A/21, Nadia Sector A/2, Umar Kot — 69100",

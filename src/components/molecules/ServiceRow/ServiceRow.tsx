@@ -31,7 +31,7 @@ export function ServiceRow({
     >
       <span className="idx">{index}</span>
       <span className="name">{name}</span>
-      <span className="arr">→</span>
+      <span className="arr">↗</span>
     </div>
   );
 }

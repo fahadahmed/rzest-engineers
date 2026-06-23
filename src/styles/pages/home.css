@@ -1,0 +1,135 @@
+/* Layout for src/pages/index.astro — page-unique grids/sizing that don't
+   repeat elsewhere (shared patterns like .section-label live in
+   rzest-ds.css instead). */
+
+.hero {
+  padding-block: var(--s-6) var(--s-7);
+  position: relative;
+}
+
+.hero-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: var(--s-5);
+}
+
+.signal-card-wrap {
+  max-width: 340px;
+  width: 100%;
+}
+
+.hero-micro {
+  max-width: 30ch;
+  text-align: left;
+}
+
+.hero-word {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3.25rem, 17vw, 16rem);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  margin: var(--s-5) 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-7);
+  align-items: end;
+}
+
+.hero-thumbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--s-4);
+}
+
+.trust-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  align-items: center;
+}
+
+.trust-image {
+  flex: none;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-6);
+  align-items: center;
+}
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+}
+
+.stats-row {
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.hero-shot {
+  height: 230px;
+  border-radius: var(--r-md);
+  box-shadow: var(--sh-2);
+}
+
+@media (min-width: 560px) {
+  .team-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .trust-card {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+@media (min-width: 700px) {
+  .proj-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .hero-top {
+    grid-template-columns: 1fr auto;
+  }
+
+  .hero-micro {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .hero-grid {
+    grid-template-columns: 0.95fr 1.05fr;
+  }
+
+  .hero-shot {
+    height: 300px;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-7);
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
