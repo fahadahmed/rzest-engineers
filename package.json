@@ -64,6 +64,10 @@
   "pnpm": {
     "overrides": {
       "vite": "^7.3.2"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
