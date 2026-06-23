@@ -156,7 +156,7 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
     <h2 class="display" style="font-size:var(--t-2xl); max-width:18ch; margin-bottom:var(--s-7)">
       Integrating Engineering & <span style="color:var(--ink-3)">Project Consultancy</span> Services
     </h2>
-    <ServicesShowcase client:visible services={homeServices} viewAllHref="/services" />
+    <ServicesShowcase client:load services={homeServices} viewAllHref="/services" />
   </section>
 
   <section class="wrap section" style="padding-top:0">

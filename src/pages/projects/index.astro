@@ -39,7 +39,7 @@ const featured = projects.find((project) => project.featured) ?? projects[0];
   </PageHero>
 
   <section class="wrap section">
-    <ProjectsFilter client:visible projects={filterableProjects} sectors={sectors} />
+    <ProjectsFilter client:load projects={filterableProjects} sectors={sectors} />
   </section>
 
   <section class="wrap section" style="padding-top:0">
