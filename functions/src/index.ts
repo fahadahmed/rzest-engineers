@@ -5,6 +5,8 @@ import { defineSecret } from "firebase-functions/params";
 import { Resend } from "resend";
 import { z } from "zod";
 
+export { datoDeployWebhook } from "./datoDeployWebhook.js";
+
 initializeApp();
 
 const resendApiKey = defineSecret("RESEND_API_KEY");
