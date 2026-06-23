@@ -1,23 +1,80 @@
 ---
 import "../styles/rzest-ds.css";
+import { Header, Footer, CtaBand } from "../components/organisms";
+import { PageHero, StatStrip } from "../components/molecules";
+
+// Inline placeholder data for this component-library smoke test only.
+// Real content wiring (mock data / DatoCMS) lands with the page redesigns.
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Projects", href: "/projects" },
+  { label: "Contact", href: "/contact" },
+];
+
+const stats = [
+  { value: "100", unit: "+", label: "Projects Delivered" },
+  { value: "11", unit: "+", label: "Years Engineering Expertise" },
+  { value: "Multi-Sector", label: "Project Portfolio" },
+];
 ---
 
 <html lang="en" data-theme="light">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-		/>
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1 class="display">Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    />
+    <title>RZest Engineers</title>
+  </head>
+  <body>
+    <Header
+      client:load
+      brandLabel="RZest Engineers"
+      brandHref="/"
+      navItems={navItems}
+      currentPath="/"
+      ctaLabel="Start a Conversation"
+      ctaHref="/contact"
+    />
+    <main class="wrap">
+      <PageHero eyebrow="Structural / Project" title="Engineering Structures. Enabling Vision.">
+        <StatStrip stats={stats} />
+      </PageHero>
+    </main>
+    <section class="wrap section">
+      <CtaBand
+        title="Let's Build with Confidence"
+        description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
+        buttonLabel="Start a Conversation"
+        buttonHref="/contact"
+      />
+    </section>
+    <Footer
+      brandLabel="RZest Engineers"
+      tagline="Full-service structural engineering and project delivery consultancy."
+      ctaLabel="Start a Conversation"
+      ctaHref="/contact"
+      companyLinks={[
+        { label: "About", href: "/about" },
+        { label: "Services", href: "/services" },
+        { label: "Projects", href: "/projects" },
+        { label: "Contact", href: "/contact" },
+      ]}
+      contactLinks={[
+        { label: "rzest@engineers.com", href: "mailto:rzest@engineers.com" },
+        { label: "+92 99065 4171", href: "tel:+92990654171" },
+      ]}
+      copyrightLine="© 2026 RZest Engineers. All rights reserved."
+      addressLine="48-A/21, Nadia Sector A/2, Umar Kot — 69100"
+    />
+  </body>
 </html>

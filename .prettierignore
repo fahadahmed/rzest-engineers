@@ -1,0 +1,7 @@
+dist/
+.astro/
+coverage/
+node_modules/
+functions/
+pnpm-lock.yaml
+.claude/

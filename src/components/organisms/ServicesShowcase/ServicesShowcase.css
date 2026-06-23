@@ -1,0 +1,18 @@
+.svc-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-6);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .svc-layout {
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--s-7);
+  }
+
+  .svc-layout .signal-card {
+    position: sticky;
+    top: 96px;
+  }
+}

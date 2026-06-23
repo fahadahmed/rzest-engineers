@@ -1,0 +1,9 @@
+.page-hero {
+  padding-block: var(--s-7) var(--s-6);
+}
+
+.page-hero h1 {
+  font-size: var(--t-3xl);
+  max-width: 18ch;
+  margin: var(--s-5) 0;
+}
