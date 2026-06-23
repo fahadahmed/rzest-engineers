@@ -271,7 +271,11 @@ hr {
   padding: 13px 22px;
   border-radius: var(--r-pill);
   border: 1.5px solid transparent;
-  transition: transform 0.18s var(--ease), background 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease);
+  transition:
+    transform 0.18s var(--ease),
+    background 0.18s var(--ease),
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
   white-space: nowrap;
 }
 
@@ -347,7 +351,10 @@ hr {
   background: transparent;
   color: var(--ink);
   font-size: var(--t-md);
-  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), color 0.18s var(--ease);
+  transition:
+    border-color 0.18s var(--ease),
+    background 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 
 .icon-btn:hover {
@@ -387,7 +394,9 @@ hr {
   text-transform: uppercase;
   border-bottom: 1.5px solid var(--ink);
   padding-bottom: 4px;
-  transition: gap 0.18s var(--ease), border-color 0.18s var(--ease);
+  transition:
+    gap 0.18s var(--ease),
+    border-color 0.18s var(--ease);
 }
 
 .link-arrow:hover {
@@ -602,7 +611,9 @@ hr {
   overflow: hidden;
   border: 1.5px solid var(--line);
   background: var(--surface);
-  transition: border-color 0.18s var(--ease), transform 0.18s var(--ease);
+  transition:
+    border-color 0.18s var(--ease),
+    transform 0.18s var(--ease);
 }
 
 .project-card:hover {
@@ -656,7 +667,9 @@ hr {
   padding: var(--s-5) 0;
   border-top: 1px dashed var(--line);
   cursor: pointer;
-  transition: padding-left 0.18s var(--ease), color 0.18s var(--ease);
+  transition:
+    padding-left 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 
 .service-row:first-of-type {
@@ -751,7 +764,9 @@ hr {
   border: 1.5px solid var(--line);
   background: transparent;
   color: var(--ink-2);
-  transition: border-color 0.18s var(--ease), color 0.18s var(--ease),
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease),
     background 0.18s var(--ease);
 }
 
@@ -873,6 +888,14 @@ hr {
   font-size: var(--t-sm);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.mobile-menu a {
+  color: var(--ink-2);
+}
+
+.mobile-menu a.is-active {
+  color: var(--ink);
 }
 
 .mobile-menu.is-open {

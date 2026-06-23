@@ -1,0 +1,12 @@
+.facts {
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+}
+
+@media (min-width: 920px) {
+  .facts {
+    position: sticky;
+    top: 96px;
+  }
+}

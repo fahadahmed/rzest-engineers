@@ -1,0 +1,32 @@
+.site-head {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1.5px dashed var(--line);
+}
+
+.site-head .links--main {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .site-head .links--main {
+    display: flex;
+  }
+
+  .site-head .nav-burger {
+    display: none;
+  }
+}
+
+.site-head .nav-cta {
+  display: none;
+}
+
+@media (min-width: 560px) {
+  .site-head .nav-cta {
+    display: inline-flex;
+  }
+}
