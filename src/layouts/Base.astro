@@ -7,10 +7,36 @@ import { siteConfig, navItems } from "../data/mock";
 export interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: "website" | "article";
 }
 
-const { title, description = siteConfig.tagline } = Astro.props;
+const {
+  title,
+  description = siteConfig.tagline,
+  ogImage = "/og-default.png",
+  ogType = "website",
+} = Astro.props;
 const currentPath = new URL(Astro.request.url).pathname;
+const canonicalUrl = new URL(currentPath, Astro.site);
+const absoluteOgImage = new URL(ogImage, Astro.site);
+const pageTitle = `${title} — ${siteConfig.brandLabel}`;
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteConfig.brandLabel,
+  url: Astro.site?.href,
+  logo: new URL("/icon-512.png", Astro.site).href,
+  description: siteConfig.tagline,
+  email: siteConfig.email,
+  telephone: siteConfig.phone1,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: siteConfig.address,
+  },
+  sameAs: siteConfig.linkedinHref ? [siteConfig.linkedinHref] : [],
+};
 ---
 
 <!doctype html>
@@ -25,13 +51,28 @@ const currentPath = new URL(Astro.request.url).pathname;
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     />
-    <title>{title} — {siteConfig.brandLabel}</title>
+    <title>{pageTitle}</title>
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:site_name" content={siteConfig.brandLabel} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationJsonLd)} />
     <script is:inline>
       // Apply a persisted theme before first paint to avoid a flash of the
       // wrong theme. Header's ThemeToggle island re-reads the same key once
