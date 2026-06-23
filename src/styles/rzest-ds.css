@@ -798,8 +798,14 @@ hr {
 .input:focus,
 .textarea:focus,
 .select:focus {
-  outline: none;
   border-color: var(--ink);
+}
+
+.input:focus-visible,
+.textarea:focus-visible,
+.select:focus-visible {
+  outline: 2px solid var(--signal-deep);
+  outline-offset: 2px;
 }
 
 .textarea {
