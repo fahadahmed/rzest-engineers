@@ -63,20 +63,12 @@ export const HOME_PAGE_QUERY = /* GraphQL */ `
       thumbnail { url }
     }
 
-    allTeamMembers(filter: { isManagingDirector: { eq: false } }, orderBy: position_ASC, first: 4) {
+    allTeamMembers(orderBy: position_ASC) {
       id
       name
       role
       initials
-    }
-
-    managingDirector: allTeamMembers(
-      filter: { isManagingDirector: { eq: true } }
-      first: 1
-    ) {
-      name
-      role
-      initials
+      isManagingDirector
     }
   }
 `;
@@ -131,6 +123,11 @@ export interface HomePageData {
     sector: string;
     thumbnail: { url: string };
   }[];
-  allTeamMembers: { id: string; name: string; role: string; initials: string }[];
-  managingDirector: { name: string; role: string; initials: string }[];
+  allTeamMembers: {
+    id: string;
+    name: string;
+    role: string;
+    initials: string;
+    isManagingDirector: boolean;
+  }[];
 }
