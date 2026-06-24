@@ -5,16 +5,19 @@ import { PageHero } from "../components/molecules/PageHero/PageHero";
 import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
 import { Placeholder } from "../components/atoms/Placeholder/Placeholder";
 import { ContactFormSection } from "../sections/ContactFormSection";
-import { siteConfig, contactPageCopy } from "../data/mock";
+import { fetchDato } from "../lib/datocms";
+import { CONTACT_PAGE_QUERY, type ContactPageData } from "../lib/queries/contact";
+
+const { contactPage, siteConfig } = await fetchDato<ContactPageData>(CONTACT_PAGE_QUERY);
 ---
 
-<Base title="Contact" description={contactPageCopy.lede}>
+<Base title="Contact" description={contactPage.lede}>
   <PageHero
-    eyebrow="Contact"
-    title={`${contactPageCopy.title} ${contactPageCopy.accent}`}
+    eyebrow={contactPage.eyebrow}
+    title={`${contactPage.title} ${contactPage.accent}`}
     titleMaxWidth="14ch"
-    accentText={contactPageCopy.accent}
-    description={contactPageCopy.lede}
+    accentText={contactPage.accent}
+    description={contactPage.lede}
   />
 
   <section class="wrap section">
