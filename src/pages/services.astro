@@ -6,16 +6,25 @@ import { StatStrip } from "../components/molecules/StatStrip/StatStrip";
 import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
 import { SignalCard } from "../components/molecules/SignalCard/SignalCard";
 import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
-import { globalStats, services, processSteps, servicesIntro } from "../data/mock";
+import { fetchDato } from "../lib/datocms";
+import { SERVICES_PAGE_QUERY, type ServicesPageData } from "../lib/queries/services";
+
+const { servicesPage, siteConfig, allServices } =
+  await fetchDato<ServicesPageData>(SERVICES_PAGE_QUERY);
+
+const globalStats = siteConfig.globalStats.map((stat) => ({
+  ...stat,
+  unit: stat.unit ?? undefined,
+}));
 ---
 
-<Base title="Services" description={servicesIntro.lede}>
+<Base title="Services" description={servicesPage.lede}>
   <PageHero
-    eyebrow="Our Services"
-    title={servicesIntro.title}
-    accentText="Project Consultancy"
+    eyebrow={servicesPage.eyebrow}
+    title={servicesPage.title}
+    accentText={servicesPage.accentText}
     accentColor="var(--ink-3)"
-    description={servicesIntro.lede}
+    description={servicesPage.lede}
   >
     <StatStrip stats={globalStats} />
   </PageHero>
@@ -25,22 +34,22 @@ import { globalStats, services, processSteps, servicesIntro } from "../data/mock
       <div>
         <Eyebrow plain>Introduction</Eyebrow>
         <h2 class="display" style="font-size:var(--t-2xl); margin:var(--s-4) 0; max-width:22ch">
-          {servicesIntro.introTitle}
+          {servicesPage.introTitle}
         </h2>
-        <p class="lede" style="max-width:54ch">{servicesIntro.introBody}</p>
+        <p class="lede" style="max-width:54ch">{servicesPage.introBody}</p>
       </div>
-      <SignalCard eyebrow={servicesIntro.signalEyebrow} title={servicesIntro.signalTitle} />
+      <SignalCard eyebrow={servicesPage.signalEyebrow} title={servicesPage.signalTitle} />
     </div>
   </section>
 
   <section class="wrap section" style="padding-top:0">
     <div class="section-label">
-      <Eyebrow>What We Do</Eyebrow>
-      <p class="desc">Six integrated service lines.</p>
+      <Eyebrow>{servicesPage.whatWeDoEyebrow}</Eyebrow>
+      <p class="desc">{servicesPage.whatWeDoSectionDesc}</p>
     </div>
     <div class="svc-cards">
       {
-        services.map((service) => (
+        allServices.map((service) => (
           <article class="svc-card">
             <div class="idx">{service.index}</div>
             <h3>{service.name}</h3>
@@ -54,15 +63,15 @@ import { globalStats, services, processSteps, servicesIntro } from "../data/mock
   <section class="wrap section" style="padding-top:0">
     <hr class="rule" style="margin-bottom:var(--s-7)" />
     <div class="section-label">
-      <Eyebrow>Engineering Approach</Eyebrow>
-      <p class="desc">Designing for performance, efficiency & buildability.</p>
+      <Eyebrow>{servicesPage.approachEyebrow}</Eyebrow>
+      <p class="desc">{servicesPage.approachSectionDesc}</p>
     </div>
     <h2 class="display" style="font-size:var(--t-2xl); max-width:20ch; margin-bottom:var(--s-7)">
-      {servicesIntro.processTitle}
+      {servicesPage.processTitle}
     </h2>
     <div class="process">
       {
-        processSteps.map((step) => (
+        servicesPage.processSteps.map((step) => (
           <div class="step">
             <div class="n">{step.number}</div>
             <div class="nm">{step.label}</div>
@@ -75,9 +84,9 @@ import { globalStats, services, processSteps, servicesIntro } from "../data/mock
   <section class="wrap section" style="padding-top:0">
     <CtaBand
       variant="ink"
-      title="Let's Build with Confidence"
-      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-      buttonLabel="Start a Conversation"
+      title={siteConfig.ctaBandTitle}
+      description={siteConfig.ctaBandDescription}
+      buttonLabel={siteConfig.ctaBandButtonLabel}
       buttonHref="/contact"
     />
   </section>
