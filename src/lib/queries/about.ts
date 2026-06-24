@@ -9,8 +9,11 @@ export const ABOUT_PAGE_QUERY = /* GraphQL */ `
       storyBody
       visionTitle
       visionBody
+      leadershipEyebrow
       leadershipSectionDesc
+      teamEyebrow
       teamSectionDesc
+      partnersEyebrow
       partnersSectionDesc
       partnersHeading
       partners {
@@ -32,7 +35,7 @@ export const ABOUT_PAGE_QUERY = /* GraphQL */ `
       }
     }
 
-    allTeamMembers(orderBy: position_ASC) {
+    allTeamMembers {
       id
       name
       role
@@ -52,8 +55,11 @@ export interface AboutPageData {
     storyBody: string;
     visionTitle: string;
     visionBody: string;
+    leadershipEyebrow: string;
     leadershipSectionDesc: string;
+    teamEyebrow: string;
     teamSectionDesc: string;
+    partnersEyebrow: string;
     partnersSectionDesc: string;
     partnersHeading: string;
     partners: { tagLabel: string; name: string; subtitle: string }[];
