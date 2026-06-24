@@ -31,7 +31,7 @@ export const SERVICES_PAGE_QUERY = /* GraphQL */ `
       }
     }
 
-    allServices(orderBy: position_ASC) {
+    allServices {
       id
       index
       name
