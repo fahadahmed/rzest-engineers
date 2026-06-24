@@ -8,19 +8,27 @@ import { Eyebrow } from "../components/atoms/Eyebrow/Eyebrow";
 import { PersonCard } from "../components/molecules/PersonCard/PersonCard";
 import { PartnerCard } from "../components/molecules/PartnerCard/PartnerCard";
 import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
-import { globalStats, teamMembers, partners, aboutStory } from "../data/mock";
+import { fetchDato } from "../lib/datocms";
+import { ABOUT_PAGE_QUERY, type AboutPageData } from "../lib/queries/about";
 
-const managingDirector = teamMembers.find((member) => member.isManagingDirector)!;
-const team = teamMembers.filter((member) => !member.isManagingDirector);
+const { aboutPage, siteConfig, allTeamMembers } = await fetchDato<AboutPageData>(ABOUT_PAGE_QUERY);
+
+const managingDirector = allTeamMembers.find((member) => member.isManagingDirector)!;
+const team = allTeamMembers.filter((member) => !member.isManagingDirector);
+
+const globalStats = siteConfig.globalStats.map((stat) => ({
+  ...stat,
+  unit: stat.unit ?? undefined,
+}));
 ---
 
-<Base title="About Us" description={aboutStory.lede}>
+<Base title="About Us" description={aboutPage.lede}>
   <PageHero
-    eyebrow="About RZest Engineers"
-    title="Engineering built on integrity, precision and experience."
+    eyebrow={aboutPage.eyebrow}
+    title={aboutPage.title}
     titleMaxWidth="16ch"
-    accentText="precision"
-    description={aboutStory.lede}
+    accentText={aboutPage.accent}
+    description={aboutPage.lede}
   >
     <StatStrip stats={globalStats} />
   </PageHero>
@@ -30,14 +38,14 @@ const team = teamMembers.filter((member) => !member.isManagingDirector);
       <Placeholder label="Engineering team" height={380} rounded="lg" />
       <div class="story-grid">
         <div>
-          <Eyebrow plain>{aboutStory.storyTitle}</Eyebrow>
+          <Eyebrow plain>{aboutPage.storyTitle}</Eyebrow>
           <hr class="rule" style="margin:var(--s-3) 0 var(--s-4)" />
-          <p>{aboutStory.storyBody}</p>
+          <p>{aboutPage.storyBody}</p>
         </div>
         <div>
-          <Eyebrow plain>{aboutStory.visionTitle}</Eyebrow>
+          <Eyebrow plain>{aboutPage.visionTitle}</Eyebrow>
           <hr class="rule" style="margin:var(--s-3) 0 var(--s-4)" />
-          <p>{aboutStory.visionBody}</p>
+          <p>{aboutPage.visionBody}</p>
         </div>
       </div>
     </div>
@@ -46,8 +54,8 @@ const team = teamMembers.filter((member) => !member.isManagingDirector);
   <section class="wrap section" style="padding-top:0">
     <hr class="rule" style="margin-bottom:var(--s-7)" />
     <div class="section-label">
-      <Eyebrow>Leadership</Eyebrow>
-      <p class="desc">Technical depth, practical execution.</p>
+      <Eyebrow>{aboutPage.leadershipEyebrow}</Eyebrow>
+      <p class="desc">{aboutPage.leadershipSectionDesc}</p>
     </div>
     <div class="two-col" style="align-items:start">
       <div
@@ -64,14 +72,14 @@ const team = teamMembers.filter((member) => !member.isManagingDirector);
           </div>
         </div>
       </div>
-      <p class="lede" style="max-width:52ch">{aboutStory.leadershipBody}</p>
+      <p class="lede" style="max-width:52ch">{siteConfig.leadershipBody}</p>
     </div>
   </section>
 
   <section class="wrap section" style="padding-top:0">
     <div class="section-label">
-      <Eyebrow>Our Team</Eyebrow>
-      <p class="desc">Multidisciplinary by design.</p>
+      <Eyebrow>{aboutPage.teamEyebrow}</Eyebrow>
+      <p class="desc">{aboutPage.teamSectionDesc}</p>
     </div>
     <div class="team-grid">
       {
@@ -85,16 +93,16 @@ const team = teamMembers.filter((member) => !member.isManagingDirector);
   <section class="wrap section" style="padding-top:0">
     <hr class="rule" style="margin-bottom:var(--s-7)" />
     <div class="section-label">
-      <Eyebrow>Partner Architects</Eyebrow>
-      <p class="desc">Collaborative industry partnerships.</p>
+      <Eyebrow>{aboutPage.partnersEyebrow}</Eyebrow>
+      <p class="desc">{aboutPage.partnersSectionDesc}</p>
     </div>
     <h2 class="display" style="font-size:var(--t-2xl); max-width:20ch; margin-bottom:var(--s-7)">
-      Working alongside leading architectural practices.
+      {aboutPage.partnersHeading}
     </h2>
     <div class="partner-grid">
       {
-        partners.map((partner) => (
-          <PartnerCard tagLabel={partner.tagLabel} name={partner.name} meta={partner.meta} />
+        aboutPage.partners.map((partner) => (
+          <PartnerCard tagLabel={partner.tagLabel} name={partner.name} meta={partner.subtitle} />
         ))
       }
     </div>
@@ -102,9 +110,9 @@ const team = teamMembers.filter((member) => !member.isManagingDirector);
 
   <section class="wrap section" style="padding-top:0">
     <CtaBand
-      title="Let's Build with Confidence"
-      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-      buttonLabel="Start a Conversation"
+      title={siteConfig.ctaBandTitle}
+      description={siteConfig.ctaBandDescription}
+      buttonLabel={siteConfig.ctaBandButtonLabel}
       buttonHref="/contact"
     />
   </section>
