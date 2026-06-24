@@ -8,9 +8,12 @@ if (!apiToken) {
   );
 }
 
+const environment = import.meta.env.DATOCMS_ENVIRONMENT;
+
 const client = new GraphQLClient("https://graphql.datocms.com/", {
   headers: {
     Authorization: `Bearer ${apiToken}`,
+    ...(environment ? { "X-Environment": environment } : {}),
   },
 });
 
