@@ -10,18 +10,23 @@ import { Tag } from "../../components/atoms/Tag/Tag";
 import { ProjectsFilter } from "../../components/organisms/ProjectsFilter/ProjectsFilter";
 import { CtaBand } from "../../components/organisms/CtaBand/CtaBand";
 import { fetchDato } from "../../lib/datocms";
-import { PROJECTS_PAGE_QUERY, type ProjectsPageData } from "../../lib/queries/projects";
-import { projects } from "../../data/mock";
+import {
+  PROJECTS_PAGE_QUERY,
+  ALL_PROJECTS_QUERY,
+  type ProjectsPageData,
+  type AllProjectsData,
+} from "../../lib/queries/projects";
 
-const { projectsPage, siteConfig } = await fetchDato<ProjectsPageData>(PROJECTS_PAGE_QUERY);
+const [{ projectsPage, siteConfig }, { allProjects: projects }] = await Promise.all([
+  fetchDato<ProjectsPageData>(PROJECTS_PAGE_QUERY),
+  fetchDato<AllProjectsData>(ALL_PROJECTS_QUERY),
+]);
 
 const globalStats = siteConfig.globalStats.map((stat) => ({
   ...stat,
   unit: stat.unit ?? undefined,
 }));
 
-// Project list/featured case study still come from mock.ts until the
-// Project model's remaining fields are built out in DatoCMS.
 const filterableProjects = projects.map((project) => ({
   id: project.id,
   href: `/projects/${project.slug}`,

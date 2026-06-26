@@ -37,15 +37,9 @@ export interface ProjectsPageData {
   };
 }
 
-/**
- * Not wired into any page yet — the Project model's fields
- * (sectorLabel, type, status, thumbnail, overview, scopeItems,
- * caseStudy*) are still being built out in DatoCMS. Kept here ready
- * for when that content lands.
- */
 export const ALL_PROJECTS_QUERY = /* GraphQL */ `
   query AllProjects {
-    allProjects {
+    allProjects(orderBy: _createdAt_ASC) {
       id
       slug
       title
@@ -53,9 +47,9 @@ export const ALL_PROJECTS_QUERY = /* GraphQL */ `
       sectorLabel
       client
       location
-      type
+      projectType
       role
-      status
+      projectStatus
       featured
       thumbnail {
         url
@@ -70,9 +64,7 @@ export const ALL_PROJECTS_QUERY = /* GraphQL */ `
         alt
       }
       tagline
-      overview {
-        text
-      }
+      overview
       scopeItems {
         field
       }
@@ -95,15 +87,15 @@ export interface ProjectRecord {
   sectorLabel: string;
   client: string;
   location: string;
-  type: string;
+  projectType: string;
   role: string;
-  status: string;
+  projectStatus: string;
   featured: boolean;
   thumbnail: { url: string; alt: string | null };
   heroImage: { url: string; alt: string | null };
   gallery: { url: string; alt: string | null }[];
   tagline: string;
-  overview: { text: string }[];
+  overview: string;
   scopeItems: { field: string }[];
   caseStudyTag: string;
   caseStudyTitle: string;
