@@ -9,8 +9,19 @@ import { Button } from "../../components/atoms/Button/Button";
 import { Tag } from "../../components/atoms/Tag/Tag";
 import { ProjectsFilter } from "../../components/organisms/ProjectsFilter/ProjectsFilter";
 import { CtaBand } from "../../components/organisms/CtaBand/CtaBand";
-import { globalStats, projects } from "../../data/mock";
+import { fetchDato } from "../../lib/datocms";
+import { PROJECTS_PAGE_QUERY, type ProjectsPageData } from "../../lib/queries/projects";
+import { projects } from "../../data/mock";
 
+const { projectsPage, siteConfig } = await fetchDato<ProjectsPageData>(PROJECTS_PAGE_QUERY);
+
+const globalStats = siteConfig.globalStats.map((stat) => ({
+  ...stat,
+  unit: stat.unit ?? undefined,
+}));
+
+// Project list/featured case study still come from mock.ts until the
+// Project model's remaining fields are built out in DatoCMS.
 const filterableProjects = projects.map((project) => ({
   id: project.id,
   href: `/projects/${project.slug}`,
@@ -25,18 +36,19 @@ const sectors = [
   { label: "Residential", value: "residential" },
   { label: "Institutional", value: "institutional" },
   { label: "Industrial", value: "industrial" },
+  { label: "Hospitality", value: "hospitality" },
 ];
 
 const featured = projects.find((project) => project.featured) ?? projects[0];
 ---
 
-<Base title="Projects" description="Projects across diverse sectors and scale.">
+<Base title="Projects" description={projectsPage.description}>
   <PageHero
-    eyebrow="Projects"
-    title="Projects across diverse sectors and scale"
+    eyebrow={projectsPage.eyebrow}
+    title={projectsPage.title}
     titleMaxWidth="16ch"
-    accentText="sectors and scale"
-    description="Our portfolio reflects extensive experience across residential, commercial, industrial, healthcare, hospitality, and institutional developments."
+    accentText={projectsPage.accentText}
+    description={projectsPage.description}
   >
     <StatStrip stats={globalStats} />
   </PageHero>
@@ -47,11 +59,11 @@ const featured = projects.find((project) => project.featured) ?? projects[0];
 
   <section class="wrap section" style="padding-top:0">
     <hr class="rule" style="margin-bottom:var(--s-7)" />
-    <Eyebrow>Featured Case Study</Eyebrow>
+    <Eyebrow>{projectsPage.featuredCaseStudyEyebrow}</Eyebrow>
     <div class="case-grid" style="margin-top:var(--s-6)">
       <Placeholder
         src={featured.heroImage.url}
-        alt={featured.heroImage.alt}
+        alt={featured.heroImage.alt ?? featured.title}
         label={featured.title}
         height={380}
         rounded="lg"
@@ -76,9 +88,9 @@ const featured = projects.find((project) => project.featured) ?? projects[0];
 
   <section class="wrap section" style="padding-top:0">
     <CtaBand
-      title="Let's Build with Confidence"
-      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-      buttonLabel="Start a Conversation"
+      title={siteConfig.ctaBandTitle}
+      description={siteConfig.ctaBandDescription}
+      buttonLabel={siteConfig.ctaBandButtonLabel}
       buttonHref="/contact"
     />
   </section>
