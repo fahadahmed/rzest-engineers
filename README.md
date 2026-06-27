@@ -1,43 +1,69 @@
-# Astro Starter Kit: Minimal
+# RZest Engineers
+
+Marketing site for RZest Engineers, a structural engineering and project consultancy. Statically generated with [Astro](https://astro.build) and [React](https://react.dev) islands, content managed in [DatoCMS](https://www.datocms.com), hosted on Firebase.
+
+For architecture, data models, sequence diagrams, and the deployment/release strategy, see the [project wiki](../../wiki).
+
+## Stack
+
+- **Astro 6** — static site generation; every page is prerendered at build time
+- **React** — interactive components only (`client:load` islands), e.g. the header nav, services showcase, and contact form
+- **DatoCMS** — all page copy and content, fetched via GraphQL at build time (no runtime CMS calls)
+- **Firebase Hosting** — serves the built static site
+- **Firebase Functions** (`asia-south1`) — two narrowly-scoped functions: forwarding contact form submissions to email via [Resend](https://resend.com), and triggering a rebuild when content is published in DatoCMS
+- **Firebase Remote Config** — used only for the one value read at runtime (`contact_recipient_email`)
+
+## Getting started
+
+Requires Node `>=22.12.0` and `pnpm` (see `packageManager` in `package.json`).
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+cp .env.example .env   # then fill in DATOCMS_API_TOKEN
+pnpm dev                # http://localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Environment variables
 
-## 🚀 Project Structure
+| Variable              | Required | Notes                                                                                                   |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `DATOCMS_API_TOKEN`   | Yes      | DatoCMS Content Delivery API token. Without it, the build fails immediately (see `src/lib/datocms.ts`). |
+| `DATOCMS_ENVIRONMENT` | No       | Only needed to point at a non-primary DatoCMS environment (e.g. a sandbox before promoting to primary). |
 
-Inside of your Astro project, you'll see the following folders and files:
+In CI, these are supplied as GitHub repo secrets rather than committed.
+
+## Commands
+
+| Command                                                | Action                                          |
+| ------------------------------------------------------ | ----------------------------------------------- |
+| `pnpm dev`                                             | Start the local dev server                      |
+| `pnpm build`                                           | Build the production site to `./dist/`          |
+| `pnpm preview`                                         | Preview the production build locally            |
+| `pnpm test` / `pnpm test:watch` / `pnpm test:coverage` | Run unit tests (Vitest)                         |
+| `pnpm test:visual` / `pnpm test:visual:update`         | Run / update Playwright visual regression tests |
+| `pnpm lint` / `pnpm lint:fix`                          | Lint (ESLint)                                   |
+| `pnpm format` / `pnpm format:check`                    | Format (Prettier)                               |
+| `pnpm storybook`                                       | Start Storybook at `localhost:6006`             |
+| `pnpm build-storybook`                                 | Build the static Storybook site                 |
+| `pnpm astro check`                                     | Type-check `.astro` files                       |
+
+## Project structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── pages/             # routes — one .astro file per page
+├── layouts/           # Base.astro: shared <head>, header/footer, GA4
+├── components/        # atoms/ → molecules/ → organisms/
+├── sections/           # page-glue components (e.g. ContactFormSection)
+├── lib/
+│   ├── datocms.ts      # fetchDato() — build-time GraphQL client
+│   └── queries/        # one query module per page (query + response type)
+└── data/               # hardcoded, non-CMS config (e.g. nav items)
+
+functions/src/          # Firebase Functions: contact form, DatoCMS webhook
+docs/                    # source of truth for the project wiki
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deployment
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Pushing to `main` builds and deploys to Firebase Hosting automatically; pull requests get their own preview channel. Publishing in DatoCMS triggers an automatic rebuild via a webhook. Full details, including the CI/CD pipeline and rollback strategy, are in the [Deployment wiki page](../../wiki/Deployment).
