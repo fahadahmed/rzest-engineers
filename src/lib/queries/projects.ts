@@ -18,33 +18,6 @@ export const PROJECTS_PAGE_QUERY = /* GraphQL */ `
         label
       }
     }
-
-    allProjects(orderBy: position_ASC) {
-      id
-      slug
-      title
-      sector
-      sectorLabel
-      client
-      location
-      type
-      role
-      status
-      featured
-      thumbnail { url }
-      heroImage { url }
-      gallery { url }
-      tagline
-      overview {
-        text
-      }
-      scopeItems {
-        text
-      }
-      caseStudyTag
-      caseStudyTitle
-      caseStudyBody
-    }
   }
 `;
 
@@ -62,6 +35,47 @@ export interface ProjectsPageData {
     ctaBandButtonLabel: string;
     globalStats: { value: string; unit: string | null; label: string }[];
   };
+}
+
+export const ALL_PROJECTS_QUERY = /* GraphQL */ `
+  query AllProjects {
+    allProjects(orderBy: _createdAt_ASC) {
+      id
+      slug
+      title
+      sector
+      sectorLabel
+      client
+      location
+      projectType
+      role
+      projectStatus
+      featured
+      thumbnail {
+        url
+        alt
+      }
+      heroImage {
+        url
+        alt
+      }
+      gallery {
+        url
+        alt
+      }
+      tagline
+      overview
+      scopeItems {
+        field
+      }
+      caseStudyTag
+      caseStudyTitle
+      caseStudyBody
+    }
+  }
+`;
+
+export interface AllProjectsData {
   allProjects: ProjectRecord[];
 }
 
@@ -73,16 +87,16 @@ export interface ProjectRecord {
   sectorLabel: string;
   client: string;
   location: string;
-  type: string;
+  projectType: string;
   role: string;
-  status: string;
+  projectStatus: string;
   featured: boolean;
-  thumbnail: { url: string };
-  heroImage: { url: string };
-  gallery: { url: string }[];
+  thumbnail: { url: string; alt: string | null };
+  heroImage: { url: string; alt: string | null };
+  gallery: { url: string; alt: string | null }[];
   tagline: string;
-  overview: { text: string }[];
-  scopeItems: { text: string }[];
+  overview: string;
+  scopeItems: { field: string }[];
   caseStudyTag: string;
   caseStudyTitle: string;
   caseStudyBody: string;

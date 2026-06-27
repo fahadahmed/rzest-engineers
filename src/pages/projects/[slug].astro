@@ -8,31 +8,46 @@ import { Eyebrow } from "../../components/atoms/Eyebrow/Eyebrow";
 import { ProjectFacts } from "../../components/molecules/ProjectFacts/ProjectFacts";
 import { LinkArrow } from "../../components/atoms/LinkArrow/LinkArrow";
 import { CtaBand } from "../../components/organisms/CtaBand/CtaBand";
-import { projects } from "../../data/mock";
-import type { Project } from "../../types/dato";
+import { fetchDato } from "../../lib/datocms";
+import {
+  ALL_PROJECTS_QUERY,
+  PROJECTS_PAGE_QUERY,
+  type AllProjectsData,
+  type ProjectRecord,
+  type ProjectsPageData,
+} from "../../lib/queries/projects";
 
-export function getStaticPaths() {
-  return projects.map((project) => ({
+export async function getStaticPaths() {
+  const { allProjects: projects } = await fetchDato<AllProjectsData>(ALL_PROJECTS_QUERY);
+  const { siteConfig } = await fetchDato<ProjectsPageData>(PROJECTS_PAGE_QUERY);
+
+  return projects.map((project, index) => ({
     params: { slug: project.slug },
-    props: { project },
+    props: {
+      project,
+      next: projects[(index + 1) % projects.length],
+      siteConfig,
+    },
   }));
 }
 
 interface Props {
-  project: Project;
+  project: ProjectRecord;
+  next: ProjectRecord;
+  siteConfig: ProjectsPageData["siteConfig"];
 }
 
-const { project } = Astro.props;
-const currentIndex = projects.findIndex((p) => p.slug === project.slug);
-const next = projects[(currentIndex + 1) % projects.length];
+const { project, next, siteConfig } = Astro.props;
+
+const overviewParagraphs = project.overview.split("\n").filter((paragraph) => paragraph.trim());
 
 const facts = [
   { key: "Client", value: project.client },
   { key: "Sector", value: project.sectorLabel },
-  { key: "Type", value: project.type },
+  { key: "Type", value: project.projectType },
   { key: "Location", value: project.location },
   { key: "Role", value: project.role },
-  { key: "Status", value: project.status },
+  { key: "Status", value: project.projectStatus },
 ];
 
 const projectJsonLd = {
@@ -57,14 +72,14 @@ const projectJsonLd = {
     <div class="detail-title">
       <div class="row" style="gap:var(--s-3); flex-wrap:wrap">
         <Tag variant="solid">{project.sectorLabel}</Tag>
-        <Tag variant="ghost">{project.type}</Tag>
+        <Tag variant="ghost">{project.projectType}</Tag>
       </div>
       <h1 class="display">{project.title}</h1>
       <p class="lede" style="max-width:48ch">{project.tagline}</p>
     </div>
     <Placeholder
       src={project.heroImage.url}
-      alt={project.heroImage.alt}
+      alt={project.heroImage.alt ?? project.title}
       label="Project hero photo"
       rounded="lg"
       className="hero-shot"
@@ -76,18 +91,23 @@ const projectJsonLd = {
       <div>
         <Eyebrow plain>Overview</Eyebrow>
         <hr class="rule" style="margin:var(--s-3) 0 var(--s-5)" />
-        {project.overview.map((paragraph) => <p style="margin-bottom:var(--s-5)">{paragraph}</p>)}
+        {overviewParagraphs.map((paragraph) => <p style="margin-bottom:var(--s-5)">{paragraph}</p>)}
 
         <Eyebrow plain>Scope of Engineering</Eyebrow>
         <hr class="rule" style="margin:var(--s-3) 0 var(--s-5)" />
         <div class="row" style="gap:var(--s-3); flex-wrap:wrap">
-          {project.scopeItems.map((item) => <Tag>{item}</Tag>)}
+          {project.scopeItems.map((item) => <Tag>{item.field}</Tag>)}
         </div>
 
         <div class="gallery" style="margin-top:var(--s-8)">
           {
             project.gallery.map((image) => (
-              <Placeholder src={image.url} alt={image.alt} label={image.alt} height={160} />
+              <Placeholder
+                src={image.url}
+                alt={image.alt ?? project.title}
+                label={image.alt ?? project.title}
+                height={160}
+              />
             ))
           }
         </div>
@@ -107,9 +127,9 @@ const projectJsonLd = {
 
   <section class="wrap section" style="padding-top:0">
     <CtaBand
-      title="Let's Build with Confidence"
-      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-      buttonLabel="Start a Conversation"
+      title={siteConfig.ctaBandTitle}
+      description={siteConfig.ctaBandDescription}
+      buttonLabel={siteConfig.ctaBandButtonLabel}
       buttonHref="/contact"
     />
   </section>

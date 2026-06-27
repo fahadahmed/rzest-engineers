@@ -9,7 +9,23 @@ import { Button } from "../../components/atoms/Button/Button";
 import { Tag } from "../../components/atoms/Tag/Tag";
 import { ProjectsFilter } from "../../components/organisms/ProjectsFilter/ProjectsFilter";
 import { CtaBand } from "../../components/organisms/CtaBand/CtaBand";
-import { globalStats, projects } from "../../data/mock";
+import { fetchDato } from "../../lib/datocms";
+import {
+  PROJECTS_PAGE_QUERY,
+  ALL_PROJECTS_QUERY,
+  type ProjectsPageData,
+  type AllProjectsData,
+} from "../../lib/queries/projects";
+
+const [{ projectsPage, siteConfig }, { allProjects: projects }] = await Promise.all([
+  fetchDato<ProjectsPageData>(PROJECTS_PAGE_QUERY),
+  fetchDato<AllProjectsData>(ALL_PROJECTS_QUERY),
+]);
+
+const globalStats = siteConfig.globalStats.map((stat) => ({
+  ...stat,
+  unit: stat.unit ?? undefined,
+}));
 
 const filterableProjects = projects.map((project) => ({
   id: project.id,
@@ -25,18 +41,20 @@ const sectors = [
   { label: "Residential", value: "residential" },
   { label: "Institutional", value: "institutional" },
   { label: "Industrial", value: "industrial" },
+  { label: "Hospitality", value: "hospitality" },
 ];
 
-const featured = projects.find((project) => project.featured) ?? projects[0];
+const featuredProjects = projects.filter((project) => project.featured);
+const featuredCaseStudies = featuredProjects.length > 0 ? featuredProjects : [projects[0]];
 ---
 
-<Base title="Projects" description="Projects across diverse sectors and scale.">
+<Base title="Projects" description={projectsPage.description}>
   <PageHero
-    eyebrow="Projects"
-    title="Projects across diverse sectors and scale"
+    eyebrow={projectsPage.eyebrow}
+    title={projectsPage.title}
     titleMaxWidth="16ch"
-    accentText="sectors and scale"
-    description="Our portfolio reflects extensive experience across residential, commercial, industrial, healthcare, hospitality, and institutional developments."
+    accentText={projectsPage.accentText}
+    description={projectsPage.description}
   >
     <StatStrip stats={globalStats} />
   </PageHero>
@@ -45,40 +63,44 @@ const featured = projects.find((project) => project.featured) ?? projects[0];
     <ProjectsFilter client:load projects={filterableProjects} sectors={sectors} />
   </section>
 
-  <section class="wrap section" style="padding-top:0">
-    <hr class="rule" style="margin-bottom:var(--s-7)" />
-    <Eyebrow>Featured Case Study</Eyebrow>
-    <div class="case-grid" style="margin-top:var(--s-6)">
-      <Placeholder
-        src={featured.heroImage.url}
-        alt={featured.heroImage.alt}
-        label={featured.title}
-        height={380}
-        rounded="lg"
-      />
-      <div>
-        <Tag variant="solid">{featured.sectorLabel}</Tag>
-        <h2 class="display" style="font-size:var(--t-2xl); margin:var(--s-4) 0">
-          {featured.caseStudyTitle}
-        </h2>
-        <p class="lede" style="max-width:52ch">{featured.caseStudyBody}</p>
-        <Button
-          href={`/projects/${featured.slug}`}
-          variant="primary"
-          showArrow
-          style={{ marginTop: "var(--s-6)" }}
-        >
-          Read full case study
-        </Button>
-      </div>
-    </div>
-  </section>
+  {
+    featuredCaseStudies.map((featured) => (
+      <section class="wrap section" style="padding-top:0">
+        <hr class="rule" style="margin-bottom:var(--s-7)" />
+        <Eyebrow>{projectsPage.featuredCaseStudyEyebrow}</Eyebrow>
+        <div class="case-grid" style="margin-top:var(--s-6)">
+          <Placeholder
+            src={featured.heroImage.url}
+            alt={featured.heroImage.alt ?? featured.title}
+            label={featured.title}
+            height={380}
+            rounded="lg"
+          />
+          <div>
+            <Tag variant="solid">{featured.sectorLabel}</Tag>
+            <h2 class="display" style="font-size:var(--t-2xl); margin:var(--s-4) 0">
+              {featured.caseStudyTitle}
+            </h2>
+            <p class="lede" style="max-width:52ch">{featured.caseStudyBody}</p>
+            <Button
+              href={`/projects/${featured.slug}`}
+              variant="primary"
+              showArrow
+              style={{ marginTop: "var(--s-6)" }}
+            >
+              Read full case study
+            </Button>
+          </div>
+        </div>
+      </section>
+    ))
+  }
 
   <section class="wrap section" style="padding-top:0">
     <CtaBand
-      title="Let's Build with Confidence"
-      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-      buttonLabel="Start a Conversation"
+      title={siteConfig.ctaBandTitle}
+      description={siteConfig.ctaBandDescription}
+      buttonLabel={siteConfig.ctaBandButtonLabel}
       buttonHref="/contact"
     />
   </section>
