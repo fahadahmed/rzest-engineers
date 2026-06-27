@@ -12,24 +12,29 @@ import { PersonCard } from "../components/molecules/PersonCard/PersonCard";
 import { StatStrip } from "../components/molecules/StatStrip/StatStrip";
 import { ServicesShowcase } from "../components/organisms/ServicesShowcase/ServicesShowcase";
 import { CtaBand } from "../components/organisms/CtaBand/CtaBand";
-import {
-  homeHero,
-  homeAboutPreview,
-  globalStats,
-  services,
-  projects,
-  teamMembers,
-} from "../data/mock";
+import { fetchDato } from "../lib/datocms";
+import { HOME_PAGE_QUERY, type HomePageData } from "../lib/queries/home";
 
-const homeServices = services.map((service) => ({
+const { homePage, siteConfig, allServices, allProjects, allTeamMembers } =
+  await fetchDato<HomePageData>(HOME_PAGE_QUERY);
+
+const { hero: homeHero, aboutPreview: homeAboutPreview } = homePage;
+
+const globalStats = siteConfig.globalStats.map((stat) => ({
+  ...stat,
+  unit: stat.unit ?? undefined,
+}));
+
+const homeServices = allServices.map((service) => ({
   id: service.id,
   index: service.index,
   name: service.name,
   description: service.fullDescription,
 }));
 
-const homeProjects = projects.slice(0, 4);
-const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slice(0, 4);
+const homeProjects = allProjects;
+const managingDirector = allTeamMembers.find((member) => member.isManagingDirector)!;
+const homeTeam = allTeamMembers.filter((member) => !member.isManagingDirector).slice(0, 4);
 ---
 
 <Base title="Structural Engineering & Project Consultancy">
@@ -47,7 +52,7 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
       <div class="hero-float">
         <Placeholder
           src={homeHero.heroImage.url}
-          alt={homeHero.heroImage.alt}
+          alt={homeHero.heroImage.alt ?? "Site photo"}
           label="Site photo"
           className="hero-shot"
         />
@@ -70,7 +75,12 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
         <div class="hero-thumbs">
           {
             homeHero.thumbImages.map((image) => (
-              <Placeholder src={image.url} alt={image.alt} label={image.alt} height={150} />
+              <Placeholder
+                src={image.url}
+                alt={image.alt ?? homeHero.signalTitle}
+                label={image.alt ?? homeHero.signalTitle}
+                height={150}
+              />
             ))
           }
         </div>
@@ -78,7 +88,7 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
           <div>
             <div class="row" style="gap:var(--s-3); margin-bottom:var(--s-3); flex-wrap:wrap">
               <AvatarStack
-                people={teamMembers.slice(0, 3).map((m) => ({ initials: m.initials }))}
+                people={allTeamMembers.slice(0, 3).map((m) => ({ initials: m.initials }))}
                 maxVisible={3}
               />
               <Eyebrow plain>{homeHero.trustLabel}</Eyebrow>
@@ -92,8 +102,8 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
           </div>
           <Placeholder
             src={homeHero.trustImage.url}
-            alt={homeHero.trustImage.alt}
-            label={homeHero.trustImage.alt}
+            alt={homeHero.trustImage.alt ?? homeHero.trustLabel}
+            label={homeHero.trustImage.alt ?? homeHero.trustLabel}
             height={128}
             className="trust-image"
           />
@@ -106,10 +116,6 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
     <hr class="rule" />
     <div class="row stats-row">
       <StatStrip stats={globalStats} />
-      <div class="row" style="gap:var(--s-3)">
-        <span class="tag tag--solid">Commercial</span>
-        <span class="tag">Residential</span>
-      </div>
     </div>
     <hr class="rule" />
   </section>
@@ -117,7 +123,7 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
   <section class="wrap section">
     <div class="section-label">
       <Eyebrow>About RZest</Eyebrow>
-      <p class="desc">Precision and trust, by design.</p>
+      <p class="desc">{homePage.aboutSectionDesc}</p>
     </div>
     <div class="two-col">
       <div>
@@ -137,8 +143,8 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
       </div>
       <Placeholder
         src={homeAboutPreview.image.url}
-        alt={homeAboutPreview.image.alt}
-        label={homeAboutPreview.image.alt}
+        alt={homeAboutPreview.image.alt ?? homeAboutPreview.title}
+        label={homeAboutPreview.image.alt ?? homeAboutPreview.title}
         height={340}
         rounded="lg"
       />
@@ -148,10 +154,10 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
   <section class="wrap section" style="padding-top:0">
     <div class="section-label">
       <Eyebrow>Our Services</Eyebrow>
-      <p class="desc">Planning · analysis · design · documentation · supervision · management.</p>
+      <p class="desc">{homePage.servicesSectionDesc}</p>
     </div>
     <h2 class="display" style="font-size:var(--t-2xl); max-width:18ch; margin-bottom:var(--s-7)">
-      Integrating Engineering & <span style="color:var(--ink-3)">Project Consultancy</span> Services
+      {homePage.servicesSectionHeading}
     </h2>
     <ServicesShowcase client:load services={homeServices} viewAllHref="/services" />
   </section>
@@ -160,10 +166,10 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
     <hr class="rule" style="margin-bottom:var(--s-7)" />
     <div class="section-label">
       <Eyebrow>Our Projects</Eyebrow>
-      <p class="desc">Selected work across diverse sectors.</p>
+      <p class="desc">{homePage.projectsSectionDesc}</p>
     </div>
     <h2 class="display" style="font-size:var(--t-2xl); max-width:16ch; margin-bottom:var(--s-7)">
-      Selected projects across <span style="color:var(--signal-deep)">diverse sectors.</span>
+      {homePage.projectsSectionHeading}
     </h2>
     <div class="proj-grid">
       {
@@ -185,28 +191,24 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
     <hr class="rule" style="margin-bottom:var(--s-7)" />
     <div class="section-label">
       <Eyebrow>Leadership</Eyebrow>
-      <p class="desc">Driven by engineering expertise.</p>
+      <p class="desc">{homePage.leadershipSectionDesc}</p>
     </div>
     <div class="two-col" style="align-items:start; margin-bottom:var(--s-7)">
       <div
         class="card"
         style="display:flex; gap:var(--s-5); align-items:center; box-shadow:var(--sh-2)"
       >
-        <div class="avatar avatar--lg avatar--signal">RA</div>
+        <div class="avatar avatar--lg avatar--signal">{managingDirector.initials}</div>
         <div>
           <Eyebrow plain>Managing Director</Eyebrow>
           <div
             style="font-family:var(--font-display); font-weight:800; font-size:var(--t-xl); margin-top:6px"
           >
-            Rabi Akhtar
+            {managingDirector.name}
           </div>
         </div>
       </div>
-      <p class="lede" style="max-width:52ch">
-        Led by Managing Director Rabi Akhtar, RZest Engineers combines technical depth with
-        practical execution to deliver reliable outcomes — supported by a multidisciplinary team of
-        structural engineers, BIM specialists and draughtsmen.
-      </p>
+      <p class="lede" style="max-width:52ch">{siteConfig.leadershipBody}</p>
     </div>
     <div class="team-grid">
       {
@@ -219,9 +221,9 @@ const homeTeam = teamMembers.filter((member) => !member.isManagingDirector).slic
 
   <section class="wrap section" style="padding-top:0">
     <CtaBand
-      title="Let's Build with Confidence"
-      description="Partner with RZest Engineers for solutions that combine precision, performance and long-term value."
-      buttonLabel="Start a Conversation"
+      title={siteConfig.ctaBandTitle}
+      description={siteConfig.ctaBandDescription}
+      buttonLabel={siteConfig.ctaBandButtonLabel}
       buttonHref="/contact"
     />
   </section>

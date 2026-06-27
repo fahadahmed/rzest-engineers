@@ -2,7 +2,9 @@
 import "../styles/rzest-ds.css";
 import { Header } from "../components/organisms/Header/Header";
 import { Footer } from "../components/organisms/Footer/Footer";
-import { siteConfig, navItems } from "../data/mock";
+import { navItems } from "../data/nav";
+import { fetchDato } from "../lib/datocms";
+import { SITE_CONFIG_QUERY, type SiteConfigData } from "../lib/queries/site-config";
 
 export interface Props {
   title: string;
@@ -10,6 +12,8 @@ export interface Props {
   ogImage?: string;
   ogType?: "website" | "article";
 }
+
+const { siteConfig } = await fetchDato<SiteConfigData>(SITE_CONFIG_QUERY);
 
 const {
   title,
@@ -111,7 +115,7 @@ const organizationJsonLd = {
         { label: siteConfig.email, href: `mailto:${siteConfig.email}` },
         { label: siteConfig.phone1, href: `tel:${siteConfig.phone1.replace(/\s/g, "")}` },
         { label: siteConfig.phone2, href: `tel:${siteConfig.phone2.replace(/\s/g, "")}` },
-        { label: siteConfig.linkedinLabel, href: siteConfig.linkedinHref },
+        { label: siteConfig.linkedinLabel, href: siteConfig.linkedinHref ?? undefined },
       ]}
       copyrightLine={`© ${new Date().getFullYear()} ${siteConfig.brandLabel}. All rights reserved.`}
       addressLine={siteConfig.address}

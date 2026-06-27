@@ -12,17 +12,28 @@ export const HOME_PAGE_QUERY = /* GraphQL */ `
         signalEyebrow
         signalTitle
         microcopy
-        heroImage { url }
+        heroImage {
+          url
+          alt
+        }
         leadTitle
         leadAccent
         leadBody
-        thumbImages { url }
+        thumbImages {
+          url
+          alt
+        }
         trustLabel
-        trustStatValue
-        trustStatUnit
-        trustStatLabel
+        trustStat {
+          value
+          unit
+          label
+        }
         trustBody
-        trustImage { url }
+        trustImage {
+          url
+          alt
+        }
       }
       aboutPreview {
         eyebrow
@@ -31,7 +42,10 @@ export const HOME_PAGE_QUERY = /* GraphQL */ `
         body
         linkLabel
         linkHref
-        image { url }
+        image {
+          url
+          alt
+        }
       }
     }
 
@@ -47,23 +61,26 @@ export const HOME_PAGE_QUERY = /* GraphQL */ `
       }
     }
 
-    allServices(orderBy: position_ASC) {
+    allServices {
       id
       index
       name
       fullDescription
     }
 
-    allProjects(filter: { featured: { eq: true } }, orderBy: position_ASC, first: 4) {
+    allProjects(filter: { featured: { eq: true } }, first: 4) {
       id
       slug
       title
       sectorLabel
       sector
-      thumbnail { url }
+      thumbnail {
+        url
+        alt
+      }
     }
 
-    allTeamMembers(orderBy: position_ASC) {
+    allTeamMembers {
       id
       name
       role
@@ -85,17 +102,15 @@ export interface HomePageData {
       signalEyebrow: string;
       signalTitle: string;
       microcopy: string;
-      heroImage: { url: string };
+      heroImage: { url: string; alt: string | null };
       leadTitle: string;
       leadAccent: string;
       leadBody: string;
-      thumbImages: { url: string }[];
+      thumbImages: { url: string; alt: string | null }[];
       trustLabel: string;
-      trustStatValue: string;
-      trustStatUnit: string | null;
-      trustStatLabel: string;
+      trustStat: { value: string; unit: string | null; label: string };
       trustBody: string;
-      trustImage: { url: string };
+      trustImage: { url: string; alt: string | null };
     };
     aboutPreview: {
       eyebrow: string;
@@ -104,7 +119,7 @@ export interface HomePageData {
       body: string;
       linkLabel: string;
       linkHref: string;
-      image: { url: string };
+      image: { url: string; alt: string | null };
     };
   };
   siteConfig: {
@@ -121,7 +136,7 @@ export interface HomePageData {
     title: string;
     sectorLabel: string;
     sector: string;
-    thumbnail: { url: string };
+    thumbnail: { url: string; alt: string | null };
   }[];
   allTeamMembers: {
     id: string;
