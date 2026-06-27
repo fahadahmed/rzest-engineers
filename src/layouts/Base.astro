@@ -26,6 +26,10 @@ const canonicalUrl = new URL(currentPath, Astro.site);
 const absoluteOgImage = new URL(ogImage, Astro.site);
 const pageTitle = `${title} — ${siteConfig.brandLabel}`;
 
+// GA4 measurement ID is intentionally public/non-secret — it's embedded
+// directly in every page's markup regardless, same as any analytics script.
+const GA_MEASUREMENT_ID = "G-G1WZWF6YCH";
+
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -77,6 +81,36 @@ const organizationJsonLd = {
     <meta name="twitter:image" content={absoluteOgImage} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationJsonLd)} />
+
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args) {
+        window.dataLayer.push(args);
+      }
+      window.gtag = gtag;
+      gtag("js", new Date());
+      gtag("config", GA_MEASUREMENT_ID);
+    </script>
+    <script is:inline>
+      // Click tracking for tel/mailto/LinkedIn links. Delegated on
+      // document because Footer (and some other links) render without a
+      // client:* directive, so they're never hydrated — a React onClick
+      // handler there would never actually bind in the browser.
+      document.addEventListener("click", (event) => {
+        const link = event.target.closest("a");
+        if (!link || typeof window.gtag !== "function") return;
+
+        const href = link.getAttribute("href") || "";
+        if (href.startsWith("tel:")) {
+          gtag("event", "tel_click", { link_url: href });
+        } else if (href.startsWith("mailto:")) {
+          gtag("event", "mailto_click", { link_url: href });
+        } else if (href.includes("linkedin.com")) {
+          gtag("event", "linkedin_click", { link_url: href });
+        }
+      });
+    </script>
     <script is:inline>
       // Apply a persisted theme before first paint to avoid a flash of the
       // wrong theme. Header's ThemeToggle island re-reads the same key once
